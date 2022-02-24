@@ -14,6 +14,20 @@
     </parent>
     <name>petclinic</name>
 
+    <developers>
+        <developer>
+            <id>andrsdt</id>
+            <name>Andrés Durán Terrero</name>
+            <email>anddurter@alum.us.es</email>
+            <url>https://github.com/andrsdt/</url>
+            <organization>G4-43</organization>
+            <timezone>+1</timezone>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
+
     <properties>
 
         <!-- Generic properties -->
