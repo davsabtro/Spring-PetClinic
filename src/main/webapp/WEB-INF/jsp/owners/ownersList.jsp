@@ -10,12 +10,12 @@
 
     <table id="ownersTable" class="table table-striped">
         <thead>
-        <tr>
-            <th style="width: 150px;">Name</th>
-            <th style="width: 200px;">Address</th>
-            <th>City</th>
-            <th style="width: 120px">Telephone</th>
-            <th>Pets</th>
+            <tr>
+            <th style="width: 150px; background-color: lightgray;">Name</th>
+            <th style="width: 200px; background-color: lightgray;">Address</th>
+            <th style="background-color: lightgray;">City</th>
+            <th style="width: 120px; background-color: lightgray;">Telephone</th>
+            <th style="background-color: lightgray;">Pets</th>
         </tr>
         </thead>
         <tbody>
