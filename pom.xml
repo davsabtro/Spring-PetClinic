@@ -37,6 +37,17 @@
                 <role>developer</role>
             </roles>
         </developer>
+        <developer>
+            <id>meriglmar</id>
+            <name>Mercedes Iglesias Martín</name>
+            <email>meriglmar@alum.us.es</email>
+            <url>https://github.com/meriglmar/</url> 
+            <organization>G4-43</organization>
+            <timezone>+1</timezone>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
     </developers>
 
     <properties>
