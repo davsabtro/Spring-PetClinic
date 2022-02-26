@@ -26,6 +26,17 @@
                 <role>developer</role>
             </roles>
         </developer>
+        <developer>
+            <id>jonatep</id>
+            <name>Julián Oñate Parra</name>
+            <email>julonapar1@alum.us.es</email>
+            <url>https://github.com/jonatep/</url>
+            <organization>G4-43</organization>
+            <timezone>+1</timezone>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
     </developers>
 
     <properties>
