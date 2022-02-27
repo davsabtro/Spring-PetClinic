@@ -48,6 +48,18 @@
                 <role>developer</role>
             </roles>
         </developer>
+        
+        <developer>
+            <id>joscacgom</id>
+            <name>José Cáceres Gómez</name>
+            <email>joscacgom@alum.us.es</email>
+            <url>https://github.com/joscacgom/</url> 
+            <organization>G4-43</organization>
+            <timezone>+1</timezone>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
     </developers>
 
     <properties>
