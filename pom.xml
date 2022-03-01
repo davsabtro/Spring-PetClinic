@@ -71,6 +71,17 @@
                 <role>developer</role>
             </roles>
         </developer>
+        <developer>
+            <id>artrodase</id>
+            <name>Artemio Rodríguez Asensio</name>
+            <email>artrodase@alum.us.es</email>
+            <url>https://github.com/artrodase/</url>
+            <organization>G4-43</organization>
+            <timezone>+1</timezone>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
     </developers>
 
     <properties>
