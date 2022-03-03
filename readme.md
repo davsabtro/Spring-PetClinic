@@ -115,5 +115,5 @@ The Spring PetClinic sample application is released under version 2.0 of the [Ap
 [spring-petclinic-graphql]: https://github.com/spring-petclinic/spring-petclinic-graphql
 [spring-petclinic-kotlin]: https://github.com/spring-petclinic/spring-petclinic-kotlin
 [spring-petclinic-rest]: https://github.com/spring-petclinic/spring-petclinic-rest
-#Bluejay Dashboard
+# Bluejay Dashboard
 [![Bluejay Dashboard](https://img.shields.io/badge/Bluejay-Dashboard_43-blue.svg)](http://dashboard.bluejay.governify.io/dashboard/script/dashboardLoader.js?dashboardURL=https://reporter.bluejay.governify.io/api/v4/dashboards/tpa-PSG2-2022-GH-gii-is-psg2_psg2-2122-g4-43/main)
