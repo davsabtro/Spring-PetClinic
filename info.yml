@@ -1,10 +1,12 @@
 project:
-  name: 'PSG2-2021-GX-XY Petclinic'
-  owner: 'LX'
-  teamId: 'XY'
+  name: 'PSG2-2122-G4-43 Petclinic'
+  owner: 'L4'
+  teamId: '43'
   identities:
     github:
-      url: 'https://github.com/gii-is-psg2/spring-petclinic'
+      url: 'https://github.com/gii-is-psg2/psg2-2122-g4-43'
+    heroku: 
+      url: 'https://psg2-2122-g4-43.herokuapp.com'
   members:
     member1:
       name: 'José María'
