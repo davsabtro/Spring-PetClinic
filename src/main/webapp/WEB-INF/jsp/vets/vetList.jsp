@@ -2,7 +2,10 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 
 <petclinic:layout pageName="vets">
     <h2>Veterinarians</h2>
@@ -12,6 +15,10 @@
         <tr>
             <th>Name</th>
             <th>Specialties</th>
+            <sec:authorize access="hasAnyAuthority('admin')">
+                <th>Actions</th>
+            </sec:authorize>
+           
         </tr>
         </thead>
         <tbody>
@@ -26,6 +33,14 @@
                     </c:forEach>
                     <c:if test="${vet.nrOfSpecialties == 0}">none</c:if>
                 </td>
+                <sec:authorize access="hasAnyAuthority('admin')">
+                <td>
+                    <spring:url value="/vets/{vetId}/delete" var="deleteVetUrl">
+                        <spring:param name="vetId" value="${vet.id}"/>
+                    </spring:url>
+                    <a href="${fn:escapeXml(deleteVetUrl)}" class="btn btn-default"><c:out value="Delete vet"/></a>
+                </td>
+            </sec:authorize>
             </tr>
         </c:forEach>
         </tbody>

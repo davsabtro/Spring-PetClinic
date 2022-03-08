@@ -16,9 +16,17 @@
 package org.springframework.samples.petclinic.owner;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.petclinic.pet.Pet;
+import org.springframework.samples.petclinic.pet.PetRepository;
+import org.springframework.samples.petclinic.pet.PetService;
+import org.springframework.samples.petclinic.pet.VisitRepository;
 import org.springframework.samples.petclinic.user.AuthoritiesService;
 import org.springframework.samples.petclinic.user.UserService;
 import org.springframework.stereotype.Service;
@@ -33,10 +41,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class OwnerService {
 
-	private OwnerRepository ownerRepository;	
-	
+	private OwnerRepository ownerRepository;
+
+
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private PetService petService;
 	
 	@Autowired
 	private AuthoritiesService authoritiesService;
@@ -44,6 +56,7 @@ public class OwnerService {
 	@Autowired
 	public OwnerService(OwnerRepository ownerRepository) {
 		this.ownerRepository = ownerRepository;
+		
 	}	
 
 	@Transactional(readOnly = true)
@@ -64,6 +77,20 @@ public class OwnerService {
 		userService.saveUser(owner.getUser());
 		//creating authorities
 		authoritiesService.saveAuthorities(owner.getUser().getUsername(), "owner");
-	}		
+	}
+	@Transactional
+    public void deleteOwner(@Valid Owner owner) {
+		 
+	  Set<Pet> emptySet= new HashSet<>();
+	  for(Pet pet : owner.getPets()){
+		petService.deletePet(pet);
+	    
+		
+	  }
+		
+	  owner.setPetsInternal(emptySet);
+	  Integer ownerId=owner.getId();
+	  ownerRepository.deleteById(ownerId);
+    }		
 
 }

@@ -37,7 +37,9 @@ public class PetService {
 	
 	private VisitRepository visitRepository;
 	
-
+	@Autowired
+	private VisitService visitService;
+	
 	@Autowired
 	public PetService(PetRepository petRepository,
 			VisitRepository visitRepository) {
@@ -75,6 +77,13 @@ public class PetService {
 
 	public Collection<Visit> findVisitsByPetId(int petId) {
 		return visitRepository.findByPetId(petId);
+	}
+
+	@Transactional
+	public void deletePet(Pet pet){
+		Integer petId=pet.getId();
+		visitService.deleteVisits(pet);
+		petRepository.deleteById(petId);
 	}
 
 }
