@@ -42,6 +42,22 @@ public class VetService {
 	@Transactional(readOnly = true)	
 	public Collection<Vet> findVets() throws DataAccessException {
 		return vetRepository.findAll();
-	}	
+	}
+	
+	@Transactional(readOnly = true)
+	public Vet findVetById(int id) throws DataAccessException{
+		return vetRepository.findById(id);
+	}
+
+	@Transactional(readOnly = true)
+	public Collection<Specialty> findSpecialties() throws DataAccessException {
+		return vetRepository.findSpecialties();
+	}
+
+	@Transactional
+	public void saveVet(Vet vet) throws DataAccessException {
+		//creating vet
+		vetRepository.save(vet);		
+	}		
 
 }
