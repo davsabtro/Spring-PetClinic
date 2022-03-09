@@ -26,10 +26,10 @@ public class PetHotelService {
 		petHotelRepository.save(petHotel);
 	}
 	
-	public LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
-	    return dateToConvert.toInstant()
-	      .atZone(ZoneId.systemDefault())
-	      .toLocalDate();
-	}
+//	public LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
+//	    return dateToConvert.toInstant()
+//	      .atZone(ZoneId.systemDefault())
+//	      .toLocalDate();
+//	}
 
 }

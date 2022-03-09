@@ -21,7 +21,7 @@ import org.springframework.samples.petclinic.pet.Pet;
 
 @Entity
 @Table(name = "hotels")
-public class PetHotel extends BaseEntity{
+public class PetHotel extends BaseEntity {
 
 	@ManyToOne
 	//@JoinColumn(name = "name")

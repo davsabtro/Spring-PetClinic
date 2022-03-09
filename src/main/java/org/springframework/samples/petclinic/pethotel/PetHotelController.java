@@ -13,6 +13,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.owner.OwnerService;
@@ -40,17 +41,23 @@ public class PetHotelController {
 	private PetHotelService petHotelService;
 	private PetService petService;
 	private OwnerService ownerService;
+	private ConversionService conversionService;
 
-	@Autowired
-	public PetHotelController(PetHotelService petHotelService, PetService petService, OwnerService ownerService) {
-		this.petHotelService = petHotelService;
-		this.petService = petService;
-		this.ownerService = ownerService;
-	}
+	
+	
 
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
 		dataBinder.setDisallowedFields("id");
+	}
+	
+	@Autowired
+	public PetHotelController(PetHotelService petHotelService, PetService petService, OwnerService ownerService,
+			ConversionService conversionService) {
+		this.petHotelService = petHotelService;
+		this.petService = petService;
+		this.ownerService = ownerService;
+		this.conversionService = conversionService;
 	}
 
 	@InitBinder
@@ -89,9 +96,8 @@ public class PetHotelController {
 			String userName = currentUser.getUsername();
 			Owner owner = ownerService.findOwnerUserName(userName);
 			String message = String.format(
-					"You have booked a room for %s from %s untill %s. You will recieve an email for confirmation!", pet,
-					petHotelService.convertToLocalDateViaInstant(startDate).toString(),
-					petHotelService.convertToLocalDateViaInstant(finishDate).toString());
+					"You have booked a room for %s from %s until %s. You will recieve an email for confirmation!", pet,
+				conversionService.convert(startDate, String.class), conversionService.convert(finishDate, String.class));
 			pethotel.setFinishDate(finishDate);
 			pethotel.setStartDate(startDate);
 			pethotel.setPet(pet);

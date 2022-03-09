@@ -5,7 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.Repository;
 import org.springframework.samples.petclinic.pet.Pet;
 
-public interface PetHotelRepository extends Repository<PetHotel, Integer> {
+public interface PetHotelRepository extends CrudRepository<PetHotel, Integer> {
 
-	void save(PetHotel petHotel) throws DataAccessException;
+	
 }
