@@ -38,7 +38,9 @@ public class PetService {
 	
 	private VisitRepository visitRepository;
 	
-
+	@Autowired
+	private VisitService visitService;
+	
 	@Autowired
 	public PetService(PetRepository petRepository,
 			VisitRepository visitRepository) {
@@ -81,6 +83,13 @@ public class PetService {
 	@Transactional(readOnly = true)
 	public Collection<Pet> findPetsByOwner(Owner user) throws DataAccessException {
 		return petRepository.findPetsByOwner(user);
+	}
+
+	@Transactional
+	public void deletePet(Pet pet){
+		Integer petId=pet.getId();
+		visitService.deleteVisits(pet);
+		petRepository.deleteById(petId);
 	}
 
 }

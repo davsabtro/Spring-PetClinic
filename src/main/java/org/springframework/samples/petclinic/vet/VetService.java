@@ -19,6 +19,7 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.petclinic.owner.OwnerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +43,16 @@ public class VetService {
 	@Transactional(readOnly = true)	
 	public Collection<Vet> findVets() throws DataAccessException {
 		return vetRepository.findAll();
+	}
+
+	@Transactional
+    public void deleteVet(Vet vet) {
+		Integer vetId= vet.getId();
+		vetRepository.deleteById(vetId);
+    }
+	@Transactional(readOnly = true)
+	public Vet findById(int vetId) {
+		return vetRepository.findById(vetId);
 	}	
 
 }

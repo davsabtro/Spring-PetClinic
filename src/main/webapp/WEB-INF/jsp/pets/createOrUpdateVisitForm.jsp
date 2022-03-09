@@ -2,8 +2,10 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
-
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 
 <petclinic:layout pageName="owners">
     <jsp:attribute name="customScript">
@@ -54,12 +56,24 @@
             <tr>
                 <th>Date</th>
                 <th>Description</th>
+                <th>Actions</th>
             </tr>
             <c:forEach var="visit" items="${visit.pet.visits}">
                 <c:if test="${!visit['new']}">
                     <tr>
                         <td><petclinic:localDate date="${visit.date}" pattern="yyyy/MM/dd"/></td>
                         <td><c:out value="${visit.description}"/></td>
+                        <sec:authorize access="hasAnyAuthority('admin')">   
+                            <td>
+                              <spring:url value="/owners/{ownerId}/pets/{petId}/visits/{visitId}/delete" 
+                                var="deleteVisitUrl">
+                                <spring:param name="ownerId" value="${visit.pet.owner.id}"/>
+                                <spring:param name="petId" value="${visit.pet.id}"/>
+                                <spring:param name="visitId" value="${visit.id}"/>
+                              </spring:url>
+                              <a href="${fn:escapeXml(deleteVisitUrl)}" class="btn btn-default"><c:out value="Delete visit"/></a>
+                            </td>
+                        </sec:authorize>
                     </tr>
                 </c:if>
             </c:forEach>
