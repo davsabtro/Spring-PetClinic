@@ -45,10 +45,14 @@
 					<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
 					<span>Error</span>
 				</petclinic:menuItem>
+				
+				<petclinic:menuItem active="${name eq 'pethotels'}" url="/pethotels/new"
+					title="trigger a RuntimeException to see how it is handled">
+					<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+					<span>Pet hotel</span>
+				</petclinic:menuItem>
 
 			</ul>
-
-
 
 
 			<ul class="nav navbar-nav navbar-right">

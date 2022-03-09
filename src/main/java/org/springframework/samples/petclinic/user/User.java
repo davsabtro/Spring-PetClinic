@@ -17,6 +17,7 @@ import lombok.Setter;
 @Table(name = "users")
 public class User{
 	@Id
+	
 	String username;
 	
 	String password;
