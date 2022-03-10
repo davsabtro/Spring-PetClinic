@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-public class SpecialtyFormatter implements Formatter<Specialty>{
+public class SpecialtyFormatter implements Formatter<Specialty> {
     
 	private final VetService vetService;
 
