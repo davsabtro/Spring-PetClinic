@@ -16,6 +16,7 @@
 package org.springframework.samples.petclinic.vet;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.Modifying;
@@ -48,5 +49,11 @@ public interface VetRepository extends Repository<Vet, Integer>{
 	@Modifying
     @Query("DELETE FROM Vet vet WHERE vet.id =:id")
     void deleteById(@Param("id")Integer vetId);
+
+	@Query("SELECT specialty FROM Specialty specialty ORDER BY specialty.name")
+	List<Specialty> findSpecialties() throws DataAccessException;
+
+	void save(Vet vet) throws DataAccessException;
+
 
 }
