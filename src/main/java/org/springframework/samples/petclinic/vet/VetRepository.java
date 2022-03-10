@@ -50,8 +50,6 @@ public interface VetRepository extends Repository<Vet, Integer>{
     @Query("DELETE FROM Vet vet WHERE vet.id =:id")
     void deleteById(@Param("id")Integer vetId);
 
-	Vet findById(int id);
-
 	@Query("SELECT specialty FROM Specialty specialty ORDER BY specialty.name")
 	List<Specialty> findSpecialties() throws DataAccessException;
 

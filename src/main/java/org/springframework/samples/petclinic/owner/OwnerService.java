@@ -85,7 +85,7 @@ public class OwnerService {
 		return ownerRepository.findOwnerUserName(userName);
 	}
 
-	}
+	
 	@Transactional
     public void deleteOwner(@Valid Owner owner) {
 		 
