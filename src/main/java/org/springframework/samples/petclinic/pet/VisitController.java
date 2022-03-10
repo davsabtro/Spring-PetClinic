@@ -39,10 +39,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class VisitController {
 
 	private final PetService petService;
+	private final VisitService visitService;
 
 	@Autowired
-	public VisitController(PetService petService) {
+	public VisitController(PetService petService,VisitService visitService) {
 		this.petService = petService;
+		this.visitService=visitService;
 	}
 
 	@InitBinder
@@ -88,6 +90,13 @@ public class VisitController {
 	public String showVisits(@PathVariable int petId, Map<String, Object> model) {
 		model.put("visits", this.petService.findPetById(petId).getVisits());
 		return "visitList";
+	}
+
+	@GetMapping(value = "/owners/{ownerId}/pets/{petId}/visits/{visitId}/delete")
+	public String deleteVisitForm(@PathVariable("visitId") int visitId, @PathVariable("petId") int petId,@PathVariable("ownerId") int ownerId) {
+	  Pet pet=this.petService.findPetById(petId);
+      this.visitService.deleteVisitById(visitId,pet);
+	  return "redirect:/owners/"+ownerId;
 	}
 
 }

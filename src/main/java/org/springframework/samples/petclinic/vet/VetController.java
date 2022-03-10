@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -127,5 +128,14 @@ public class VetController {
 		mav.addObject(this.vetService.findVetById(vetId));
 		return mav;
 	}
+	
+	@GetMapping(value = "/vets/{vetId}/delete")
+	public String deleteVetForm(@PathVariable("vetId") int vetId) {
+
+	  Vet vet=this.vetService.findById(vetId);
+	  this.vetService.deleteVet(vet);
+	  return "redirect:/vets";
+		}
 
 }
+
