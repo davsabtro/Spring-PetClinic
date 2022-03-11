@@ -8,15 +8,15 @@
 	uri="http://www.springframework.org/security/tags"%>
 
 <petclinic:layout pageName="vets">
-    <h2>Veterinarians</h2>
+    <h2>Veterinarios</h2>
 
     <table id="vetsTable" class="table table-striped">
         <thead>
         <tr>
-            <th>Name</th>
-            <th>Specialties</th>
+            <th>Nombre</th>
+            <th>Especialidades</th>
             <sec:authorize access="hasAnyAuthority('admin')">
-                <th>Actions</th>
+                <th>Acciones</th>
             </sec:authorize>
            
         </tr>
@@ -41,7 +41,7 @@
                     <spring:url value="/vets/{vetId}/delete" var="deleteVetUrl">
                         <spring:param name="vetId" value="${vet.id}"/>
                     </spring:url>
-                    <a href="${fn:escapeXml(deleteVetUrl)}" class="btn btn-default"><c:out value="Delete vet"/></a>
+                    <a href="${fn:escapeXml(deleteVetUrl)}" class="btn btn-default"><c:out value="Eliminar Veterinario"/></a>
                 </td>
             </sec:authorize>
             </tr>
@@ -51,12 +51,12 @@
 
     <spring:url value="/vets/new" var="addUrl">
     </spring:url>
-    <a href="${fn:escapeXml(addUrl)}" class="btn btn-default">Add Vet</a>
+    <a href="${fn:escapeXml(addUrl)}" class="btn btn-default">Añadir Veterinario</a>
 
     <table class="table-buttons">
         <tr>
             <td>
-                <a href="<spring:url value="/vets.xml" htmlEscape="true" />">View as XML</a>
+                <a href="<spring:url value="/vets.xml" htmlEscape="true" />">Ver como XML</a>
             </td>            
         </tr>
     </table>

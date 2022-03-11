@@ -8,24 +8,24 @@
 
 <petclinic:layout pageName="vets">
     <h2>
-        <c:if test="${vet['new']}">New </c:if> Vet
+        <c:if test="${vet['new']}">Nuevo </c:if> Veterinario
     </h2>
     <form:form modelAttribute="vet" class="form-horizontal" id="add-vet-form">
         <div class="form-group has-feedback">
-            <petclinic:inputField label="First Name" name="firstName"/>
-            <petclinic:inputField label="Last Name" name="lastName"/>
+            <petclinic:inputField label="Nombre" name="firstName"/>
+            <petclinic:inputField label="Apellido" name="lastName"/>
             <div class="col-sm-offset-1">
-                <td><b>Specialties:</b></td>
+                <td><b>Especialidades:</b></td>
                 <td><form:checkboxes items="${specialties}" path="specialties"/></td>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <c:choose>
                     <c:when test="${vet['new']}">
-                        <button class="btn btn-default" type="submit">Add Vet</button>
+                        <button class="btn btn-default" type="submit">Añadir Veterinario</button>
                     </c:when>
                     <c:otherwise>
-                        <button class="btn btn-default" type="submit">Update Vet</button>
+                        <button class="btn btn-default" type="submit">Actualizar Veterinario</button>
                     </c:otherwise>
                 </c:choose>
             </div>

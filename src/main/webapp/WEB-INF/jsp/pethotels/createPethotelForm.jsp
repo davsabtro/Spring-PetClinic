@@ -11,27 +11,27 @@
 
 
 <petclinic:layout pageName="pethotels">
-   <h2> <security:authorize access="isAuthenticated()"> Hello, <security:authentication
-					property="principal.username" />! 
+   <h2> <security:authorize access="isAuthenticated()"> Hola, <security:authentication
+                  property="principal.username" />! 
 </security:authorize>
 		</h2>
     <h1>
-        <c:if test="${pethotel['new']}">Book a room for your pet in  </c:if> 
+        <c:if test="${pethotel['new']}">Reserva una habitacion para tu mascota en  </c:if> 
         <img id="png" src="/resources/images/pet_hotel_logo.png" width="100px">
     </h1>
     <form:form modelAttribute="pethotel" class="form-horizontal" id="add-owner-form">
         <div class="form-group has-feedback">
       
-       <label for="startDate">Check in:</label>
+     <label for="startDate">Entrada:</label>
 	  <input type="date" id="startDate" name="startDate" min="${today}">
 	  
-	  <label for="finishDate">Check out:</label>
-	  <input type="date" id="finishDate" name="finishDate" min="${tomorrow}">
+	  <label for="finishDate">Salida:</label>
+    <input type="date" id="finishDate" name="finishDate" min="${tomorrow}">
 	  
 	 <br>
 	   </br>
-	  <h2>What pet do you want to book the room for?</h2>
-           <c:forEach items="${petsCollection}" var="pethotels">
+	  <h2> Para que mascota quieres la habitacion?</h2>
+          <c:forEach items="${petsCollection}" var="pethotels">
             <tr>    
                 <td>
                  
@@ -46,7 +46,7 @@
             <div >
                 <c:choose>
                     <c:when test="${pethotel['new']}">
-                        <button class="btn btn-default" type="submit">Book</button>
+                        <button class="btn btn-default" type="submit">Reservar</button>
                     </c:when>
                 </c:choose>
             </div>
