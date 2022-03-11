@@ -47,7 +47,7 @@ public class PetController {
 	private static final String VIEWS_PETS_CREATE_OR_UPDATE_FORM = "pets/createOrUpdatePetForm";
 
 	private final PetService petService;
-        private final OwnerService ownerService;
+    private final OwnerService ownerService;
 
 	@Autowired
 	public PetController(PetService petService, OwnerService ownerService) {
@@ -146,5 +146,15 @@ public class PetController {
 			return "redirect:/owners/{ownerId}";
 		}
 	}
+
+	@GetMapping(value = "/pets/{petId}/delete")
+	public String deletePetForm(@PathVariable("petId") int petId) {
+
+	  Pet pet=this.petService.findPetById(petId);
+	  this.petService.deletePet(pet);
+
+	  Integer ownerId=pet.getOwner().getId();
+	  return "redirect:/owners/"+ownerId;
+		}
 
 }

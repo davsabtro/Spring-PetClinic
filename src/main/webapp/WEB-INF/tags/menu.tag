@@ -31,7 +31,7 @@
 				<petclinic:menuItem active="${name eq 'owners'}" url="/owners/find"
 					title="find owners">
 					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-					<span>Encontrar Propietarios</span>
+					<span>Buscar Propietarios</span>
 				</petclinic:menuItem>
 
 				<petclinic:menuItem active="${name eq 'vets'}" url="/vets"
@@ -45,16 +45,20 @@
 					<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
 					<span>Error</span>
 				</petclinic:menuItem>
+				
+				<petclinic:menuItem active="${name eq 'pethotels'}" url="/pethotels/new"
+					title="trigger a RuntimeException to see how it is handled">
+					<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+					<span>Pet hotel</span>
+				</petclinic:menuItem>
 
 			</ul>
-
-
 
 
 			<ul class="nav navbar-nav navbar-right">
 				<sec:authorize access="!isAuthenticated()">
 					<li><a href="<c:url value="/login" />">Entrar</a></li>
-					<li><a href="<c:url value="/users/new" />">Registrarse</a></li>
+					<li><a href="<c:url value="/users/new" />">Registro</a></li>
 				</sec:authorize>
 				<sec:authorize access="isAuthenticated()">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
