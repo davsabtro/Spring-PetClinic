@@ -12,7 +12,7 @@
 
 <petclinic:layout pageName="pethotels">
    <h2> <security:authorize access="isAuthenticated()"> Hola, <security:authentication
-					property="principal.username" />! 
+                  property="principal.username" />! 
 </security:authorize>
 		</h2>
     <h1>
@@ -22,16 +22,16 @@
     <form:form modelAttribute="pethotel" class="form-horizontal" id="add-owner-form">
         <div class="form-group has-feedback">
       
-       <label for="startDate">Entrada:</label>
+     <label for="startDate">Entrada:</label>
 	  <input type="date" id="startDate" name="startDate" min="${today}">
 	  
 	  <label for="finishDate">Salida:</label>
-	  <input type="date" id="finishDate" name="finishDate" min="${tomorrow}">
+    <input type="date" id="finishDate" name="finishDate" min="${tomorrow}">
 	  
 	 <br>
 	   </br>
 	  <h2> Para que mascota quieres la habitacion?</h2>
-           <c:forEach items="${petsCollection}" var="pethotels">
+          <c:forEach items="${petsCollection}" var="pethotels">
             <tr>    
                 <td>
                  

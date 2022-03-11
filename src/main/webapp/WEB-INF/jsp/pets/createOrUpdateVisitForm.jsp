@@ -71,7 +71,7 @@
                                 <spring:param name="petId" value="${visit.pet.id}"/>
                                 <spring:param name="visitId" value="${visit.id}"/>
                               </spring:url>
-                              <a href="${fn:escapeXml(deleteVisitUrl)}" class="btn btn-default"><c:out value="Eliminar visita"/></a>
+                              <a href="${fn:escapeXml(deleteVisitUrl)}" class="btn btn-default"><c:out value="Eliminar Visita"/></a>
                             </td>
                         </sec:authorize>
                     </tr>
