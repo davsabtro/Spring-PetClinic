@@ -35,6 +35,9 @@ class VisitControllerTests {
 	@MockBean
 	private PetService clinicService;
 
+	@MockBean
+	private VisitService visitService;
+
 	@Autowired
 	private MockMvc mockMvc;
 
