@@ -47,9 +47,9 @@
 				</petclinic:menuItem>
 				
 				<petclinic:menuItem active="${name eq 'pethotels'}" url="/pethotels/new"
-					title="trigger a RuntimeException to see how it is handled">
+					title="hotel">
 					<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
-					<span>Pet hotel</span>
+					<span>Hotel</span>
 				</petclinic:menuItem>
 
 			</ul>
