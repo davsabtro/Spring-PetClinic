@@ -129,6 +129,14 @@ public class OwnerController {
 		}
 	}
 
+	@GetMapping(value = "/owners/{ownerId}/delete")
+	public String deleteOwnerForm(@PathVariable("ownerId") int ownerId) {
+
+	  Owner owner=this.ownerService.findOwnerById(ownerId);
+	  this.ownerService.deleteOwner(owner);
+	  return "redirect:/owners";
+		}
+	
 	/**
 	 * Custom handler for displaying an owner.
 	 * @param ownerId the ID of the owner to display
