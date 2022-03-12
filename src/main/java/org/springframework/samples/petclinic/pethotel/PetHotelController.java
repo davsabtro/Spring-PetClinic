@@ -5,12 +5,8 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.core.convert.ConversionService;
@@ -43,17 +39,14 @@ public class PetHotelController {
 	private OwnerService ownerService;
 	private ConversionService conversionService;
 
-	
-	
-
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
 		dataBinder.setDisallowedFields("id");
 	}
-	
+
 	@Autowired
-	public PetHotelController(PetHotelService petHotelService, PetService petService, OwnerService ownerService,
-			ConversionService conversionService) {
+	public PetHotelController(PetHotelService petHotelService, PetService petService,
+			OwnerService ownerService, ConversionService conversionService) {
 		this.petHotelService = petHotelService;
 		this.petService = petService;
 		this.ownerService = ownerService;
@@ -71,7 +64,8 @@ public class PetHotelController {
 	public String initCreationForm(Map<String, Object> model) {
 		PetHotel pethotel = new PetHotel();
 		model.put("pethotel", pethotel);
-		User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User currentUser =
+				(User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String userName = currentUser.getUsername();
 		Owner owner = ownerService.findOwnerUserName(userName);
 		Collection<Pet> pets = petService.findPetsByOwner(owner);
@@ -85,19 +79,23 @@ public class PetHotelController {
 
 	@PostMapping(value = "/new")
 	public String processCreationForm(
-			@RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date startDate,
-			@RequestParam("finishDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date finishDate,
+			@RequestParam("startDate") @DateTimeFormat(
+					iso = DateTimeFormat.ISO.DATE_TIME) Date startDate,
+			@RequestParam("finishDate") @DateTimeFormat(
+					iso = DateTimeFormat.ISO.DATE_TIME) Date finishDate,
 			@RequestParam("pet") Pet pet, @Valid PetHotel pethotel, BindingResult result,
 			RedirectAttributes redirectAttributes, ModelMap model) {
 		if (result.hasErrors()) {
 			return VIEWS_PETHOTEL_CREATE_FORM;
 		} else {
-			User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			User currentUser =
+					(User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			String userName = currentUser.getUsername();
 			Owner owner = ownerService.findOwnerUserName(userName);
 			String message = String.format(
-              "Has reservado una habitacion para %s desde %s hasta %s. !Recibirás un correo de confirmación!", pet,
-          conversionService.convert(startDate, String.class), conversionService.convert(finishDate, String.class));
+					"Has reservado una habitacion para %s desde %s hasta %s. !Recibirás un correo de confirmación!",
+					pet, conversionService.convert(startDate, String.class),
+					conversionService.convert(finishDate, String.class));
 			pethotel.setFinishDate(finishDate);
 			pethotel.setStartDate(startDate);
 			pethotel.setPet(pet);
@@ -107,5 +105,4 @@ public class PetHotelController {
 			return "redirect:/";
 		}
 	}
-
 }

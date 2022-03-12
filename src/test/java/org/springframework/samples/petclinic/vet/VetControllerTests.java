@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,11 +24,11 @@ import org.springframework.test.web.servlet.MockMvc;
 /**
  * Test class for the {@link VetController}
  */
-@WebMvcTest(controllers = VetController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class)
+@WebMvcTest(controllers = VetController.class,
+		excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE,
+				classes = WebSecurityConfigurer.class),
+		excludeAutoConfiguration = SecurityConfiguration.class)
 class VetControllerTests {
-
-	@Autowired
-	private VetController vetController;
 
 	@MockBean
 	private VetService clinicService;
@@ -39,7 +38,6 @@ class VetControllerTests {
 
 	@BeforeEach
 	void setup() {
-
 		Vet james = new Vet();
 		james.setFirstName("James");
 		james.setLastName("Carter");
@@ -58,14 +56,15 @@ class VetControllerTests {
 	@WithMockUser(value = "spring")
 	@Test
 	void testShowVetListHtml() throws Exception {
-		mockMvc.perform(get("/vets")).andExpect(status().isOk()).andExpect(model().attributeExists("vets"))
-				.andExpect(view().name("vets/vetList"));
+		mockMvc.perform(get("/vets")).andExpect(status().isOk())
+				.andExpect(model().attributeExists("vets")).andExpect(view().name("vets/vetList"));
 	}
 
 	@WithMockUser(value = "spring")
 	@Test
 	void testShowVetListXml() throws Exception {
-		mockMvc.perform(get("/vets.xml").accept(MediaType.APPLICATION_XML)).andExpect(status().isOk())
+		mockMvc.perform(get("/vets.xml").accept(MediaType.APPLICATION_XML))
+				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_XML_VALUE))
 				.andExpect(content().node(hasXPath("/vets/vetList[id=1]/id")));
 	}
