@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page session="false" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -16,7 +17,7 @@
 </security:authorize>
 		</h2>
     <h1>
-        <c:if test="${pethotel['new']}">Reserva una habitacion para tu mascota en  </c:if> 
+        <c:if test="${pethotel['new']}">Reserva una habitación para tu mascota en  </c:if> 
         <img id="png" src="/resources/images/pet_hotel_logo.png" width="100px">
     </h1>
     <form:form modelAttribute="pethotel" class="form-horizontal" id="add-owner-form">
@@ -30,7 +31,7 @@
 	  
 	 <br>
 	   </br>
-	  <h2> Para que mascota quieres la habitacion?</h2>
+	  <h2> Para que mascota quieres la habitación?</h2>
           <c:forEach items="${petsCollection}" var="pethotels">
             <tr>    
                 <td>

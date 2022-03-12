@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page session="false" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -8,7 +9,7 @@
 
 <petclinic:layout pageName="owners">
 
-    <h2>Informacion del Propietario</h2>
+    <h2>Información del Propietario</h2>
 
 
     <table class="table table-striped">
@@ -72,7 +73,7 @@
                         <thead>
                         <tr>
                             <th>Fecha de Visita</th>
-                            <th>Descripcion</th>
+                            <th>Descripción</th>
                         </tr>
                         </thead>
                         <c:forEach var="visit" items="${pet.visits}">
