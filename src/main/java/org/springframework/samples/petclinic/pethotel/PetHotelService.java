@@ -52,8 +52,7 @@ public class PetHotelService {
 		return ((startDate.after(bookedStartDate) && finishDate.before(bookedFinishedDate))
 				|| (startDate.before(bookedStartDate) && finishDate.after(bookedStartDate))
 				|| (startDate.before(bookedFinishedDate) && finishDate.after(bookedFinishedDate))
-				|| startDate.equals(bookedStartDate) || startDate.equals(bookedFinishedDate)
-				|| finishDate.equals(bookedStartDate) || finishDate.equals(bookedFinishedDate));
+				|| startDate.equals(bookedStartDate) || finishDate.equals(bookedFinishedDate));
 
 	}
 

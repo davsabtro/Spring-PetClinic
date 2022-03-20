@@ -31,8 +31,10 @@
 				for="finishDate">Salida:</label> <input type="date" id="finishDate"
 				name="finishDate" min="${tomorrow}"> <br> </br>
 			<h2>
-				Para que mascota quieres la habitación?
-				<c:if test="${not empty petHotelDataAboutThisOwner}">
+				¿Para qué mascota quieres la habitación?
+				<c:choose>
+				
+				<c:when test="${not empty petHotelDataAboutThisOwner}">
 
 					<div class="popup" onclick="myFunction()">
 						<span class="glyphicon glyphicon-info-sign"></span> <span
@@ -53,7 +55,24 @@
 							popup.classList.toggle("show");
 						}
 					</script>
-				</c:if>
+				</c:when>
+				<c:otherwise>
+        <div class="popup" onclick="myFunction()">
+						<span class="glyphicon glyphicon-info-sign"></span> <span
+							class="popuptext" id="myPopup"> <br> Actualmente tus mascotas no tienen reservas
+
+						</span>
+					</div>
+
+					<script>
+						function myFunction() {
+							var popup = document.getElementById("myPopup");
+							popup.classList.toggle("show");
+						}
+					</script>
+        <br />
+    </c:otherwise>
+</c:choose>
 			</h2>
 			<c:forEach items="${petsCollection}" var="pethotels">
 				<tr>
