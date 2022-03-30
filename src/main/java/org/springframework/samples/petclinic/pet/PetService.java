@@ -91,5 +91,10 @@ public class PetService {
 		visitService.deleteVisits(pet);
 		petRepository.deleteById(petId);
 	}
+	
+	@Transactional(readOnly = true)
+	public Integer findNumberOfPetsByOwner(Owner user) throws DataAccessException {
+		return petRepository.findNumberOfPetsByOwner(user);
+	}
 
 }

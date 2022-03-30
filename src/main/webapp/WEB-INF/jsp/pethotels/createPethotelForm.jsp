@@ -10,7 +10,6 @@
 <%@ taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@ page import="java.time.format.DateTimeFormatter"%>
-<style><%@ include file="pupup.less"%></style>
 
 <petclinic:layout pageName="pethotels">
 
