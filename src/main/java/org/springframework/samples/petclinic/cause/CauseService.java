@@ -14,18 +14,10 @@
 package org.springframework.samples.petclinic.cause;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.samples.petclinic.pet.Pet;
-import org.springframework.samples.petclinic.pet.PetService;
-import org.springframework.samples.petclinic.user.AuthoritiesService;
-import org.springframework.samples.petclinic.user.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 @Service
 public class CauseService {
@@ -36,31 +28,31 @@ public class CauseService {
 	@Autowired
 	public CauseService(CauseRepository causeRepository) {
 		this.causeRepository = causeRepository;
-	}	
-	
+	}
+
 	public Collection<Cause> findAll() {
 		return causeRepository.findAll();
 	}
 
 	@Transactional
 	public void saveCause(Cause cause) throws DataAccessException {
-		causeRepository.save(cause);		
+		causeRepository.save(cause);
 	}
 
 
 	public Cause findCauseById(int causeId) {
 		return causeRepository.findById(causeId);
-	}		
-	
+	}
+
 	@Transactional
 	public void deleteCause(Cause cause) {
 		causeRepository.deleteById(cause.getId());
 	}
-	
+
 	@Transactional
-    public void deleteAllCauses(){
-        causeRepository.deleteAll();
-    }
+	public void deleteAllCauses() {
+		causeRepository.deleteAll();
+	}
 
 
 }

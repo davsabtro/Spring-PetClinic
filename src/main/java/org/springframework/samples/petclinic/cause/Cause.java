@@ -1,88 +1,70 @@
 /*
  * Copyright 2002-2013 the original author or authors.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 package org.springframework.samples.petclinic.cause;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.samples.petclinic.model.NamedEntity;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
 @Entity
 @Table(name = "causes")
-public class Cause extends NamedEntity{
-    
+public class Cause extends NamedEntity {
+
     @NotEmpty
     @NotNull
-    @Column(name = "description")
     private String description;
 
     @NotNull
-	@Column(name = "budget_target")
     private Integer budgetTarget;
 
-    @Value("0")
-    @Column(name = "donated")
-    private Integer donated;
+    private int donated;
 
     @NotEmpty
     @NotNull
-    @Column(name = "organization")
     private String organization;
-    
-    public void setDescription(String description)  {
-    	this.description = description;
+
+    public void setDescription(String description) {
+        this.description = description;
     }
-   
-    public void setBudgetTarget(Integer budgetTarget)  {
-    	this.budgetTarget = budgetTarget;
+
+    public void setBudgetTarget(Integer budgetTarget) {
+        this.budgetTarget = budgetTarget;
     }
-    
-    public void setDonated(Integer donated)  {
-    	this.donated = donated;
+
+    public void setDonated(Integer donated) {
+        this.donated = donated;
     }
-    
-    public void setOrganization(String organization)  {
-    	this.organization = organization;
+
+    public void setOrganization(String organization) {
+        this.organization = organization;
     }
-    
+
     public String getDescription() {
-    	return this.description;
+        return this.description;
     }
-    
+
     public Integer getBudgetTarget() {
-    	return this.budgetTarget;
+        return this.budgetTarget;
     }
-    
+
     public Integer getDonated() {
-    	return this.donated;
+        return this.donated;
     }
-    
+
     public String getOrganization() {
-    	return this.organization;
+        return this.organization;
     }
-    
-    
-    
 }
