@@ -27,7 +27,6 @@ import org.springframework.samples.petclinic.model.NamedEntity;
 import lombok.Getter;
 import lombok.Setter;
 
-
 @Getter
 @Setter
 @Entity
@@ -52,7 +51,38 @@ public class Cause extends NamedEntity{
     @Column(name = "organization")
     private String organization;
     
+    public void setDescription(String description)  {
+    	this.description = description;
+    }
    
+    public void setBudgetTarget(Integer budgetTarget)  {
+    	this.budgetTarget = budgetTarget;
+    }
+    
+    public void setDonated(Integer donated)  {
+    	this.donated = donated;
+    }
+    
+    public void setOrganization(String organization)  {
+    	this.organization = organization;
+    }
+    
+    public String getDescription() {
+    	return this.description;
+    }
+    
+    public Integer getBudgetTarget() {
+    	return this.budgetTarget;
+    }
+    
+    public Integer getDonated() {
+    	return this.donated;
+    }
+    
+    public String getOrganization() {
+    	return this.organization;
+    }
+    
     
     
 }
