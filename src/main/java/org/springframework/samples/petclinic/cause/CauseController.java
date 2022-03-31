@@ -73,7 +73,7 @@ public class CauseController {
 	public String showCauseList(Map<String, Object> model) {
 		Collection<Cause> causes = causeService.findAll();
 		model.put("causes", causes);
-		return "causes/causeList";
+		return "causes/causesList";
 	}
 
 	@GetMapping(value = {"/causes/{id}/edit"})
