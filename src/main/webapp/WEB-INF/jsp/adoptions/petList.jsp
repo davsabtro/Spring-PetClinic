@@ -9,6 +9,8 @@
 <%@ page import="java.time.format.DateTimeFormatter"%>
 
 
+
+
 <upstream:layout pageName="games">
 	<jsp:body>
    <h2> <security:authorize access="isAuthenticated()"> Hello, <security:authentication
@@ -57,12 +59,16 @@
                      <br />
                     </c:when>
                     <c:otherwise>
-       					 Pendiente de adopción
+                    <spring:url
+										value="/adoption/{petId}/suitorsList" var="petSuitorsUrl">
+                        <spring:param name="petId" value="${pet.id}" />
+                    </spring:url>
+       		
+       					 <a href="${fn:escapeXml(petSuitorsUrl)}"> Ver solicitudes </a> 
        					<br />      
     				</c:otherwise>
     				</c:choose>
                    </td>
-                </td>
                 
        
         </c:forEach>
@@ -70,7 +76,7 @@
     </table>
       
 
-	</div>
+	
     </jsp:body>
 </upstream:layout>
 
