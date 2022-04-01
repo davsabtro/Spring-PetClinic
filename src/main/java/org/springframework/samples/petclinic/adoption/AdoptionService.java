@@ -28,20 +28,24 @@ public class AdoptionService {
 		adoptionRepository.save(adoption);
 	}
 
-	public Collection<Adoption> findPetsForAdoption() {
+	@Transactional(readOnly = true)
+	public Collection<Adoption> findPetsForAdoption() throws DataAccessException {
 		return adoptionRepository.findPetsForAdoption();
 	}
-
-	public Integer findNumberOfPetsForAdoption() {
+	
+	@Transactional(readOnly = true)
+	public Integer findNumberOfPetsForAdoption() throws DataAccessException {
 		return adoptionRepository.findNumberOfPetsForAdoption();
 	}
 
-	public Adoption findPetsForAdoptionByAdoptionId(Integer adoptionId) {
+	@Transactional(readOnly = true)
+	public Adoption findPetsForAdoptionByAdoptionId(Integer adoptionId) throws DataAccessException {
 		return adoptionRepository.findPetsForAdoptionByAdoptionId(adoptionId);
 	}
 
-	public List<Owner> findSuitorsByPetId(Integer petId) {
-		return adoptionRepository.findSuitorsByPetId(petId);
+	@Transactional(readOnly = true)
+	public List<Adoption> findAdoptionDataByPetId(Integer petId) throws DataAccessException {
+		return adoptionRepository.findAdoptionDataByPetId(petId);
 	}
 
 }

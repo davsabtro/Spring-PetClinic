@@ -38,12 +38,8 @@ function typeWriter() {
   transform: translate(-50%, -50%);
 }
 </style>
-
-
 <petclinic:layout pageName="adoptions">
 	<jsp:body>
-
-	
    <h2> <security:authorize access="isAuthenticated()"> Hola, <security:authentication
 					property="principal.username" />! 
 </security:authorize>
@@ -57,33 +53,24 @@ function typeWriter() {
             <th style="width: 200px;">Fecha de nacimiento</th>
             <th style="width: 120px">Tipo</th>
             <th style="width: 120px">Dueño</th>
-            
-            
         </tr>
         </thead>
         <tbody> 
-        
-   
             <tr>    
                 <td>
-                    <c:out value="${petData.pet.name}" />
+                    <c:out value="${detailsAdoption.adoption.pet.name}" />
                 </td>
                 <td>
-                ${petData.pet.birthDate.format( DateTimeFormatter.ofPattern("dd/MM/yyyy"))}
+                ${detailsAdoption.adoption.pet.birthDate.format( DateTimeFormatter.ofPattern("dd/MM/yyyy"))}
                     
                 </td>
                 <td>
-                ${petData.pet.type} 
+                ${detailsAdoption.adoption.pet.type} 
                 </td>
                  <td>
-                ${petData.owner.user.username} 
+                ${detailsAdoption.adoption.owner.user.username} 
                 </td>
              </tbody>
-    </table>      
-               
-         
+    </table>           
     </jsp:body>
 </petclinic:layout>
-
-
-

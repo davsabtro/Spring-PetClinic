@@ -39,15 +39,13 @@ function typeWriter() {
 
 <petclinic:layout pageName="suitors">
 	<jsp:body>
-   <h2> <security:authorize access="isAuthenticated()"> Hello, <security:authentication
+   <h2> <security:authorize access="isAuthenticated()"> Hola, <security:authentication
 					property="principal.username" />! 
 </security:authorize>
 		</h2>
-
 <c:choose>
 <c:when
 			test="${numOfSuitors eq 0}">
-			
 			<html>
 <body onload="typeWriter()">
 	<div class="container">
@@ -55,21 +53,15 @@ function typeWriter() {
 			 <div class="centered"><h2 id="demo"></h2></div>
 </div>
 </body>
-</html>
-			
+</html>	
 </c:when>
                     <c:otherwise>
-                    
                      <c:if test="${numOfSuitors eq 1}">
        					 <h1>¡Tienes ${numOfSuitors} solicitud para tu mascota! </h1>
        					 </c:if>
-       					 
        					 <c:if test="${numOfSuitors gt 1}">
        					 <h1>¡Tienes ${numOfSuitors} solicitudes para tu mascota! </h1>
        					 </c:if>
-                    
-                     
-   	
     <table id="gamesTable" class="table table-striped">
         <thead>
         <tr>
@@ -78,46 +70,40 @@ function typeWriter() {
             <th style="width: 200px;">Dirección</th>
             <th style="width: 120px">Cuidad</th>
             <th style="width: 120px">Teléfono</th>
-            
+            <th style="width: 120px">Fecha solicitud</th>
+            <th style="width: 120px">Mensaje</th> 
         </tr>
         </thead>
         <tbody> 
-        
-        <c:forEach items="${suitors}" var="suitor">
+        <c:forEach items="${detailsAdoption}" var="details">
             <tr>    
                 <td>
-                    <c:out value="${suitor.firstName}" />
+                    <c:out value="${details.suitorToAdopt.firstName}" />
                     &nbsp
-                    <c:out value="${suitor.lastName}" />
-                </td>
-                
-                <td>
-                  ${suitor.user.username} 
+                    <c:out value="${details.suitorToAdopt.lastName}" />
                 </td>
                 <td>
-                ${suitor.address}
-                    
+                  ${details.suitorToAdopt.user.username} 
                 </td>
                 <td>
-                ${suitor.city} 
+                ${details.suitorToAdopt.address} 
                 </td>
-                
+                <td>
+                ${details.suitorToAdopt.city} 
+                </td>
                  <td>
-                  ${suitor.telephone} 
+                  ${details.suitorToAdopt.telephone} 
                 </td>
-                
-       
+                <td>
+                  ${details.request_date} 
+                </td>
+                <td>
+                  ${details.careDescription} 
+                </td>
         </c:forEach>
         </tbody>
     </table>
-      
-                    
                     </c:otherwise>
     				</c:choose>
-
-   
-
-
     </jsp:body>
 </petclinic:layout>
-

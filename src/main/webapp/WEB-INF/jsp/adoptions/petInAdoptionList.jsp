@@ -42,8 +42,6 @@ function typeWriter() {
 
 <petclinic:layout pageName="adoptions">
 	<jsp:body>
-
-	
    <h2> <security:authorize access="isAuthenticated()"> Hola, <security:authentication
 					property="principal.username" />! 
 </security:authorize>
@@ -61,16 +59,12 @@ function typeWriter() {
 </html>
  </c:when>
                     <c:otherwise>
-                    
                     <c:if test="${numOfPets eq 1}">
        					 <h1>Hay ${numOfPets} mascota para adoptar </h1>
        					 </c:if>
-       					 
        					 <c:if test="${numOfPets gt 1}">
        					 <h1>Hay ${numOfPets} mascotas para adoptar </h1>
        					 </c:if>
-       					 
-   	
     <table id="gamesTable" class="table table-striped">
         <thead>
         <tr>
@@ -80,11 +74,9 @@ function typeWriter() {
             <th style="width: 120px">Dueño</th>
             <th style="width: 120px">Alta</th>
             <th style="width: 120px">Acción</th>
-            
         </tr>
         </thead>
         <tbody> 
-        
         <c:forEach items="${petsCollection}" var="adoption">
             <tr>    
                 <td>
@@ -92,7 +84,6 @@ function typeWriter() {
                 </td>
                 <td>
                 ${adoption.pet.birthDate.format( DateTimeFormatter.ofPattern("dd/MM/yyyy"))}
-                    
                 </td>
                 <td>
                 ${adoption.pet.type} 
@@ -100,11 +91,9 @@ function typeWriter() {
                  <td>
                 ${adoption.owner.user.username} 
                 </td>
-                
                 <td>
                 ${adoption.request_date.format( DateTimeFormatter.ofPattern("dd/MM/yyyy"))} 
                 </td>
-                
                  <td>
                   <c:choose>
                     <c:when
@@ -113,34 +102,26 @@ function typeWriter() {
      
                      <br />
                     </c:when>
+                    <c:when
+                    test="${adoption.owner.user.username eq currentUserName}">
+                   			No puedes adoptar tu mascota
+                     <br />
+                    </c:when>
                     <c:otherwise>
-       					
-
                     <spring:url
-										value="/adoption/{adoptionId}/{petId}/{adopterId}/requestForAdoption" var="adoptionUrl">
+										value="/adoption/{adoptionId}/manageAdoptionRequest" var="adoptionUrl">
                         <spring:param name="adoptionId" value="${adoption.id}" />
-                        <spring:param name="petId" value="${adoption.pet.id}" />
-                         <spring:param name="adopterId" value="${adoption.owner.id}" />
                     </spring:url>
-                    <a class="btn btn-default" href="${fn:escapeXml(adoptionUrl)}" role="button"> Solicitar adopción </a> 
+                    <a  href="${fn:escapeXml(adoptionUrl)}"> Gestionar adopción </a> 
        					<br /> 
-
     				</c:otherwise>
     				</c:choose>
                    </td>
-                </td>
-                
-       
         </c:forEach>
         </tbody>
     </table>
        					<br />      
     				</c:otherwise>
     				</c:choose>
-   
-      
-
-	</div>
     </jsp:body>
 </petclinic:layout>
-

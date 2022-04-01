@@ -6,10 +6,13 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.samples.petclinic.detailsadoption.DetailsAdoption;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.pet.Pet;
@@ -19,9 +22,6 @@ public class Adoption extends BaseEntity {
 
 	@ManyToOne
 	private Owner owner;
-
-	@OneToMany
-	private List<Owner> SuitorsToAdopt;
 
 	@ManyToOne
 	private Pet pet;
@@ -52,14 +52,6 @@ public class Adoption extends BaseEntity {
 
 	public void setRequest_date(LocalDate request_date) {
 		this.request_date = request_date;
-	}
-
-	public List<Owner> getSuitorsToAdopt() {
-		return SuitorsToAdopt;
-	}
-
-	public void setSuitorsToAdopt(List<Owner> suitorsToAdopt) {
-		SuitorsToAdopt = suitorsToAdopt;
 	}
 
 }

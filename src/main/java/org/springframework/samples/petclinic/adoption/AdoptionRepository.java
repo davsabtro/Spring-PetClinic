@@ -19,7 +19,7 @@ public interface AdoptionRepository extends CrudRepository<Adoption, Integer> {
 	@Query("SELECT a FROM Adoption a WHERE a.id = :adoptionId")
 	public Adoption findPetsForAdoptionByAdoptionId(@Param("adoptionId") Integer adoptionId);
 
-	@Query("SELECT a.SuitorsToAdopt FROM Adoption a WHERE a.pet.id = :petId")
-	public List<Owner> findSuitorsByPetId(@Param("petId") Integer petId);
+	@Query("SELECT a FROM Adoption a WHERE a.pet.id = :petId")
+	public List<Adoption> findAdoptionDataByPetId(@Param("petId") Integer petId);
 
 }
