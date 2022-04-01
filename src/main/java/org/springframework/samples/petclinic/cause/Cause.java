@@ -15,6 +15,7 @@ package org.springframework.samples.petclinic.cause;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import org.springframework.samples.petclinic.model.NamedEntity;
@@ -23,48 +24,53 @@ import org.springframework.samples.petclinic.model.NamedEntity;
 @Table(name = "causes")
 public class Cause extends NamedEntity {
 
-    @NotEmpty
-    @NotNull
-    private String description;
+	@NotEmpty
+	@NotNull
+	private String description;
 
-    @NotNull
-    private Integer budgetTarget;
+	private double budgetTarget;
 
-    private int donated;
+	private double donated;
 
-    @NotEmpty
-    @NotNull
-    private String organization;
+	@NotEmpty
+	@NotNull
+	private String organization;
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	@Transient
+	public boolean isClosed() {
+		// A cause is closed if it has reached its target.
+		return this.donated >= this.budgetTarget;
+	}
 
-    public void setBudgetTarget(Integer budgetTarget) {
-        this.budgetTarget = budgetTarget;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public void setDonated(Integer donated) {
-        this.donated = donated;
-    }
+	public void setBudgetTarget(double budgetTarget) {
+		this.budgetTarget = budgetTarget;
+	}
 
-    public void setOrganization(String organization) {
-        this.organization = organization;
-    }
+	public void setDonated(double donated) {
+		this.donated = donated;
+	}
 
-    public String getDescription() {
-        return this.description;
-    }
+	public void setOrganization(String organization) {
+		this.organization = organization;
+	}
 
-    public Integer getBudgetTarget() {
-        return this.budgetTarget;
-    }
+	public String getDescription() {
+		return this.description;
+	}
 
-    public Integer getDonated() {
-        return this.donated;
-    }
+	public double getBudgetTarget() {
+		return this.budgetTarget;
+	}
 
-    public String getOrganization() {
-        return this.organization;
-    }
+	public double getDonated() {
+		return this.donated;
+	}
+
+	public String getOrganization() {
+		return this.organization;
+	}
 }
