@@ -16,6 +16,7 @@
 package org.springframework.samples.petclinic.owner;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.Modifying;
@@ -24,6 +25,7 @@ import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.owner.OwnerRepository;
+import org.springframework.samples.petclinic.pet.Pet;
 
 /**
  * Spring Data JPA OwnerRepository interface
@@ -67,4 +69,6 @@ public interface OwnerRepository extends Repository<Owner, Integer> {
 	@Query("DELETE FROM Owner owner WHERE owner.id =:id")
 	public void deleteById(@Param("id") int id);
 
+	@Query("SELECT owner.pets FROM Owner owner WHERE owner.user.username =:userName")
+	public List<Pet> findOwnersPets(@Param("userName") String userName);
 }

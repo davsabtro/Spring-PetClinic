@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -79,10 +80,14 @@ public class PetHotelController {
 		String today = LocalDate.now().toString();
 		model.put("today", today);
 		String tomorrow = LocalDate.now().plusDays(1).toString();
-		model.put("tomorrow", tomorrow);
+		model.put("tomorrow", tomorrow);	
 		Collection<PetHotel> petHotelDataAboutThisOwner = petHotelService.findPetHotelDataByOwner(owner);
+		List<Pet> myPetsCollection = ownerService.findOwnersPets(userName);
+		model.put("owner", owner);
+		model.put("myPetsCollection", myPetsCollection);
 		if (!petHotelDataAboutThisOwner.isEmpty()) {
 			model.put("petHotelDataAboutThisOwner", petHotelDataAboutThisOwner);
+			
 		}
 		return VIEWS_PETHOTEL_CREATE_FORM;
 	}

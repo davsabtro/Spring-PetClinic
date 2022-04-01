@@ -46,6 +46,12 @@
 					<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
 					<span>Dar en adopción</span>
 				</petclinic:menuItem>
+				
+				<petclinic:menuItem active="${name eq 'adoption'}" url="/adoption/petsOnAdoptionList"
+					title="hotel">
+					<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+					<span>Adoptar</span>
+				</petclinic:menuItem>
 
 			</ul>
 
