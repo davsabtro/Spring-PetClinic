@@ -66,39 +66,24 @@ function typeWriter() {
         <thead>
         <tr>
             <th style="width: 150px;">Nombre</th>
-             <th style="width: 150px;">Username</th>
-            <th style="width: 200px;">Dirección</th>
-            <th style="width: 120px">Cuidad</th>
-            <th style="width: 120px">Teléfono</th>
             <th style="width: 120px">Fecha solicitud</th>
-            <th style="width: 120px">Mensaje</th> 
         </tr>
         </thead>
         <tbody> 
         <c:forEach items="${detailsAdoption}" var="details">
             <tr>    
                 <td>
-                    <c:out value="${details.suitorToAdopt.firstName}" />
-                    &nbsp
-                    <c:out value="${details.suitorToAdopt.lastName}" />
+                    <spring:url value="/adoption/{adoptionId}/suitor/{suitorId}" var="detailsAdoptionURL">
+                        <spring:param name="adoptionId" value="${details.adoption.id}"/>
+                        <spring:param name="suitorId" value="${details.suitorToAdopt.id}"/>
+                    </spring:url>
+                    <a href="${fn:escapeXml(detailsAdoptionURL)}">
+                      <c:out value="${details.suitorToAdopt.firstName} ${details.suitorToAdopt.lastName}"/>
+                    </a>
                 </td>
-                <td>
-                  ${details.suitorToAdopt.user.username} 
-                </td>
-                <td>
-                ${details.suitorToAdopt.address} 
-                </td>
-                <td>
-                ${details.suitorToAdopt.city} 
-                </td>
-                 <td>
-                  ${details.suitorToAdopt.telephone} 
-                </td>
+
                 <td>
                   ${details.request_date} 
-                </td>
-                <td>
-                  ${details.careDescription} 
                 </td>
         </c:forEach>
         </tbody>

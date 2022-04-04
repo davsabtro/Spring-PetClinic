@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.adoption;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Collection;
@@ -38,6 +39,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/adoption")
@@ -165,6 +167,64 @@ public class AdoptionController {
 		model.put("detailsAdoption", detailsAdoption);
 		model.put("numOfSuitors", numOfSuitors);
 		return VIEWS_SUITORS_LIST;
+	}
+
+	@GetMapping(value = "/{adoptionId}/suitor/{suitorId}/approve")
+	public String approveAdoption(@PathVariable("adoptionId") int adoptionId, @PathVariable("suitorId") int suitorId, ModelMap model,
+								RedirectAttributes redirectAttributes) {
+
+		Adoption adoption = adoptionService.findPetsForAdoptionByAdoptionId(adoptionId);
+		Boolean isLoggedInUserCorrect = checkCorrectLoggedInUser(adoption);
+
+		if(!isLoggedInUserCorrect){
+			redirectAttributes.addFlashAttribute("message",
+			String.format("No puedes aceptar una adopción de una mascota que no te pertenece"));
+			return "redirect:/";
+		}
+
+		Owner suitor = ownerService.findOwnerById(suitorId);
+
+		changePetsOwnership(adoption.getOwner(), adoption.getPet(), suitor);
+		removeAdoptionRequests(adoption);
+
+		redirectAttributes.addFlashAttribute("message",
+		String.format("¡%s ha sido adoptado por %s con exito!", adoption.getPet().getName(), suitor.getFirstName() + suitor.getLastName()));
+		return "redirect:/";
+	}
+
+	@GetMapping("/{adoptionId}/suitor/{suitorId}")
+	public ModelAndView showVet(@PathVariable("adoptionId") int adoptionId, @PathVariable("suitorId") int suitorId) {
+		ModelAndView mav = new ModelAndView("adoptions/adoptionRequestDetails");
+		mav.addObject("request", this.detailsAdoptionService.findDetailAdoptionsByAdoptionAndSuitor(adoptionId, suitorId));
+		return mav;
+	}
+
+	public Boolean checkCorrectLoggedInUser(Adoption adoption) {
+		Owner owner = adoption.getOwner();
+		String userName = userService.getCurrentUserName();
+		if(owner.getUser().getUsername() != userName){
+			return false;
+		}
+		else{
+			return true;
+		}
+	}
+
+	public void changePetsOwnership(Owner owner, Pet pet, Owner suitor) {
+		suitor.addPet(pet);
+		owner.removePet(pet);
+
+		pet.setOwner(suitor);
+		pet.setIsGivenForAdoption(false);
+
+		ownerService.saveOwner(owner);
+		ownerService.saveOwner(suitor);
+	}
+
+	public void removeAdoptionRequests(Adoption adoption) {
+		Integer adoptionId = adoption.getId();
+		detailsAdoptionService.deleteDetailsByAdoption(adoptionId);
+		adoptionService.deleteAdoptionRequests(adoptionId);
 	}
 
 }

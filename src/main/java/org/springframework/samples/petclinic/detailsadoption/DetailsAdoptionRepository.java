@@ -20,4 +20,11 @@ public interface DetailsAdoptionRepository extends CrudRepository<DetailsAdoptio
 	@Query("SELECT da FROM DetailsAdoption da WHERE da.suitorToAdopt = :owner")
 	public DetailsAdoption findDetailAdoptionsByOwner(@Param("owner") Owner owner);
 
+	@Query("SELECT da FROM DetailsAdoption da WHERE da.adoption.id = :adoptionId AND da.suitorToAdopt.id = :suitorId")
+	public DetailsAdoption findDetailAdoptionsByAdoptionAndSuitor(@Param("adoptionId") Integer adoptionId, @Param("suitorId") Integer suitorId);
+
+	@Modifying
+	@Query("DELETE from DetailsAdoption da WHERE da.adoption.id = :adoptionId")
+	public void deleteDetailsByAdoption(@Param("adoptionId") Integer adoptionId);
+
 }
