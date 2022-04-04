@@ -16,6 +16,7 @@ package org.springframework.samples.petclinic.cause;
 import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.petclinic.donation.Donation;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +43,10 @@ public class CauseService {
 
 	public Cause findCauseById(int causeId) {
 		return causeRepository.findById(causeId);
+	}
+
+	public Collection<Donation> findDonationListOfCauseById(int causeId) {
+		return causeRepository.findDonationListOfCauseById(causeId);
 	}
 
 	@Transactional
