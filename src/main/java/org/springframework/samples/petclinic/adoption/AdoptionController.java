@@ -169,6 +169,7 @@ public class AdoptionController {
 		return VIEWS_SUITORS_LIST;
 	}
 
+	
 	@GetMapping(value = "/{adoptionId}/suitor/{suitorId}/approve")
 	public String approveAdoption(@PathVariable("adoptionId") int adoptionId, @PathVariable("suitorId") int suitorId, ModelMap model,
 								RedirectAttributes redirectAttributes) {
