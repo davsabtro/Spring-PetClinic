@@ -16,7 +16,10 @@ package org.springframework.samples.petclinic.cause;
 import java.util.Collection;
 import java.util.Map;
 import javax.validation.Valid;
+
+import org.hibernate.validator.internal.util.DomainNameUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.donation.Donation;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -81,6 +84,16 @@ public class CauseController {
 		Cause cause = causeService.findCauseById(causeId);
 		model.addAttribute(cause);
 		return VIEWS_CAUSE_CREATE_OR_UPDATE_FORM;
+	}
+
+	@GetMapping(value = {"/causes/{id}"})
+	public String showCauseInfo(@PathVariable("id") int causeId, Model model) {
+		Cause cause = causeService.findCauseById(causeId);
+		Collection<Donation> donationList=causeService.findDonationListOfCauseById(causeId);
+		model.addAttribute(cause);
+		model.addAttribute(donationList);
+
+		return "causes/causeDetails";
 	}
 
 	@PostMapping(value = "/causes/{id}/edit")
