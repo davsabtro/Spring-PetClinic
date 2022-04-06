@@ -48,4 +48,9 @@ public class AdoptionService {
 		return adoptionRepository.findAdoptionDataByPetId(petId);
 	}
 
+	@Transactional(readOnly = true)
+	public void deleteAdoptionRequests(Integer adoptionId) {
+		adoptionRepository.deleteAdoptionRequests(adoptionId);
+	}
+
 }

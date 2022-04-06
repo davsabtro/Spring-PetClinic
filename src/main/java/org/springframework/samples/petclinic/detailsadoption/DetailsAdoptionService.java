@@ -45,4 +45,14 @@ public class DetailsAdoptionService {
 		return detailsAdoptionRepository.findDetailAdoptionsByOwner(owner);
 	}
 
+	@Transactional(readOnly = true)
+	public DetailsAdoption findDetailAdoptionsByAdoptionAndSuitor(Integer adoptionId, Integer suitorId) {
+		return detailsAdoptionRepository.findDetailAdoptionsByAdoptionAndSuitor(adoptionId, suitorId);
+	}
+
+	@Transactional(readOnly = true)
+	public void deleteDetailsByAdoption(Integer adoptionId) {
+		detailsAdoptionRepository.deleteDetailsByAdoption(adoptionId);
+	}
+
 }
