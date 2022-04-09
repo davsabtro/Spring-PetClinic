@@ -28,6 +28,11 @@ public class DonationValidator implements Validator {
 		if (Donation.getAmount() <= 0) {
 			errors.rejectValue("amount", "El importe de donacion debe ser mayor que cero", "El importe de donacion debe ser mayor que cero");
 		}
+
+		String[] splitter = Donation.getAmount().toString().split("\\.");
+		if (splitter[1].length() > 2) {
+			errors.rejectValue("amount", "El importe no debe de tener más de dos números decimales", "El importe no debe de tener más de dos números decimales");
+		}
 	}
 
 	@Override
