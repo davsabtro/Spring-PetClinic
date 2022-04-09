@@ -20,6 +20,7 @@ pageEncoding="UTF-8"%> <%@ page session="false" trimDirectiveWhitespaces="true" 
         <div class="form-group has-feedback">
             <petclinic:inputField label="Importe" name="amount"/>
         </div>
+
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <button class="btn btn-default" type="submit">Realizar donación</button>
