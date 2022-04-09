@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.cause.Cause;
 import org.springframework.samples.petclinic.cause.CauseService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 @Service
 public class DonationService {
@@ -18,6 +20,7 @@ public class DonationService {
 		this.donationRepository = donationRepository;
 	}
 
+	@Transactional
 	public void saveDonation(Donation donation) {
 		Cause cause = donation.getCause();
 		if (cause.isClosed())

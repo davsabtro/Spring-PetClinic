@@ -3,6 +3,8 @@ package org.springframework.samples.petclinic.donation;
 import java.time.LocalDate;
 import java.util.NoSuchElementException;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.cause.Cause;
 import org.springframework.samples.petclinic.cause.CauseService;
@@ -12,6 +14,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,6 +47,11 @@ public class DonationController {
 		dataBinder.setDisallowedFields("id");
 	}
 
+	@InitBinder("donation")
+	public void initDonationBinder(WebDataBinder dataBinder) {
+		dataBinder.setValidator(new DonationValidator());
+	}
+
 	private User getLoggedUser() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		return userService.findUser(auth.getName()).orElseThrow(NoSuchElementException::new);
@@ -57,9 +66,18 @@ public class DonationController {
 
 	@PostMapping("/new")
 	public String processCreationForm(HttpSession session,
-			@PathVariable(name = "causeId") int causeId, Donation donation, BindingResult result) {
+			@PathVariable(name = "causeId") int causeId, @Valid Donation donation, BindingResult result, ModelMap model) {
 		if (result.hasErrors()) {
+			if (result.getAllErrors().get(0).getDefaultMessage().contains("java.lang.NumberFormatException")) {	
+				System.out.println(model.values());
+				model.clear();
+				model.put("donation", donation);
+                result = new BeanPropertyBindingResult(donation, "donation");
+				result.rejectValue("amount", "No puedes introducir texto en el importe de la donación", "No puedes introducir texto en el importe de la donación");
+				model.put("org.springframework.validation.BindingResult.donation", result);
+            }
 			return VIEWS_DONATION_CREATE_FORM;
+
 		} else {
 			Cause cause = causeService.findCauseById(causeId);
 			donation.setCause(cause);

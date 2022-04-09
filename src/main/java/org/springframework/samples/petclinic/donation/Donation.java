@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -35,7 +36,7 @@ public class Donation extends BaseEntity {
 	}
 
 	public void setAmount(Double amount) {
-		this.amount = amount;
+			this.amount = amount;
 	}
 
 	public void setCause(Cause cause) {
