@@ -48,7 +48,7 @@ import org.springframework.samples.petclinic.owner.Owner;
 @Table(name = "pets")
 public class Pet extends NamedEntity {
 
-	@Column(name = "birth_date")        
+	@Column(name = "birth_date")
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	private LocalDate birthDate;
 
@@ -62,6 +62,17 @@ public class Pet extends NamedEntity {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "pet", fetch = FetchType.EAGER)
 	private Set<Visit> visits;
+
+	@Column(name = "is_given_for_adoption")
+	private Boolean isGivenForAdoption = false;
+
+	public Boolean getIsGivenForAdoption() {
+		return isGivenForAdoption;
+	}
+
+	public void setIsGivenForAdoption(Boolean isGivenForAdoption) {
+		this.isGivenForAdoption = isGivenForAdoption;
+	}
 
 	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
