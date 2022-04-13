@@ -25,7 +25,7 @@
 				<petclinic:menuItem active="${name eq 'owners'}" url="/owners/find"
 					title="find owners">
 					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-					<span>Dueños</span>
+					<span>Dueï¿½os</span>
 				</petclinic:menuItem>
 
 				<petclinic:menuItem active="${name eq 'vets'}" url="/vets"
@@ -34,6 +34,11 @@
 					<span>Veterinarios</span>
 				</petclinic:menuItem>
 
+				<petclinic:menuItem active="${name eq 'causes'}" url="/causes"
+					title="causes">
+					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span>Causas</span>
+				</petclinic:menuItem>
 				
 				<petclinic:menuItem active="${name eq 'pethotels'}" url="/pethotels/new"
 					title="hotel">
@@ -44,7 +49,7 @@
 				<petclinic:menuItem active="${name eq 'adoption'}" url="/adoption/petsList"
 					title="hotel">
 					<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
-					<span>Dar en adopción</span>
+					<span>Dar en adopciï¿½n</span>
 				</petclinic:menuItem>
 				
 				<petclinic:menuItem active="${name eq 'adoption'}" url="/adoption/petsOnAdoptionList"
