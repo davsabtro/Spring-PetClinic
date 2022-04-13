@@ -1,3 +1,4 @@
+<%@tag pageEncoding="UTF-8" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
@@ -25,7 +26,7 @@
 				<petclinic:menuItem active="${name eq 'owners'}" url="/owners/find"
 					title="find owners">
 					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-					<span>Due�os</span>
+					<span>Dueños</span>
 				</petclinic:menuItem>
 
 				<petclinic:menuItem active="${name eq 'vets'}" url="/vets"
@@ -49,7 +50,7 @@
 				<petclinic:menuItem active="${name eq 'adoption'}" url="/adoption/petsList"
 					title="hotel">
 					<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
-					<span>Dar en adopci�n</span>
+					<span>Dar en adopción</span>
 				</petclinic:menuItem>
 				
 				<petclinic:menuItem active="${name eq 'adoption'}" url="/adoption/petsOnAdoptionList"

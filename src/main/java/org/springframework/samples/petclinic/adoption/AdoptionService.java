@@ -2,14 +2,8 @@ package org.springframework.samples.petclinic.adoption;
 
 import java.util.Collection;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.repository.query.Param;
-import org.springframework.samples.petclinic.owner.Owner;
-import org.springframework.samples.petclinic.pethotel.PetHotel;
-import org.springframework.samples.petclinic.pethotel.PetHotelRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +26,7 @@ public class AdoptionService {
 	public Collection<Adoption> findPetsForAdoption() throws DataAccessException {
 		return adoptionRepository.findPetsForAdoption();
 	}
-	
+
 	@Transactional(readOnly = true)
 	public Integer findNumberOfPetsForAdoption() throws DataAccessException {
 		return adoptionRepository.findNumberOfPetsForAdoption();

@@ -20,7 +20,6 @@ import java.util.Set;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.repository.query.Param;
 import org.springframework.samples.petclinic.pet.Pet;
 import org.springframework.samples.petclinic.pet.PetService;
 import org.springframework.samples.petclinic.user.AuthoritiesService;
@@ -97,7 +96,7 @@ public class OwnerService {
 		ownerRepository.deleteById(ownerId);
 	}
 
-	public List<Pet> findOwnersPets(String userName){
+	public List<Pet> findOwnersPets(String userName) {
 		return ownerRepository.findOwnersPets(userName);
 	}
 }

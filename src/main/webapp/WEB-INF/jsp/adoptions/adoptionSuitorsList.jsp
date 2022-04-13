@@ -83,7 +83,7 @@ function typeWriter() {
                 </td>
 
                 <td>
-                  ${details.request_date} 
+                  ${details.requestDate} 
                 </td>
         </c:forEach>
         </tbody>

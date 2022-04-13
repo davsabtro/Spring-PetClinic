@@ -1,26 +1,18 @@
 package org.springframework.samples.petclinic.pethotel;
 
+import java.util.Collection;
+import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.pet.Pet;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.util.Collection;
-import java.util.Date;
-
 @Service
 public class PetHotelService {
 
 	private PetHotelRepository petHotelRepository;
-
-	@Autowired
-	private ConversionService conversionService;
 
 	@Autowired
 	public PetHotelService(PetHotelRepository petHotelRepository) {

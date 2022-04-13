@@ -1,17 +1,9 @@
 package org.springframework.samples.petclinic.detailsadoption;
 
-import java.util.Collection;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.repository.query.Param;
-import org.springframework.samples.petclinic.adoption.Adoption;
-import org.springframework.samples.petclinic.adoption.AdoptionRepository;
 import org.springframework.samples.petclinic.owner.Owner;
-import org.springframework.samples.petclinic.pethotel.PetHotel;
-import org.springframework.samples.petclinic.pethotel.PetHotelRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,8 +38,10 @@ public class DetailsAdoptionService {
 	}
 
 	@Transactional(readOnly = true)
-	public DetailsAdoption findDetailAdoptionsByAdoptionAndSuitor(Integer adoptionId, Integer suitorId) {
-		return detailsAdoptionRepository.findDetailAdoptionsByAdoptionAndSuitor(adoptionId, suitorId);
+	public DetailsAdoption findDetailAdoptionsByAdoptionAndSuitor(Integer adoptionId,
+			Integer suitorId) {
+		return detailsAdoptionRepository.findDetailAdoptionsByAdoptionAndSuitor(adoptionId,
+				suitorId);
 	}
 
 	@Transactional(readOnly = true)

@@ -1,19 +1,11 @@
 package org.springframework.samples.petclinic.adoption;
 
-import java.security.Principal;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-
 import javax.validation.Valid;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.detailsadoption.DetailsAdoption;
 import org.springframework.samples.petclinic.detailsadoption.DetailsAdoptionService;
@@ -22,12 +14,7 @@ import org.springframework.samples.petclinic.owner.OwnerService;
 import org.springframework.samples.petclinic.pet.Pet;
 import org.springframework.samples.petclinic.pet.PetService;
 import org.springframework.samples.petclinic.pet.exceptions.DuplicatedPetNameException;
-import org.springframework.samples.petclinic.pethotel.PetHotelController;
-import org.springframework.samples.petclinic.pethotel.PetHotelService;
 import org.springframework.samples.petclinic.user.UserService;
-import org.springframework.samples.petclinic.vet.Vet;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -38,8 +25,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/adoption")
@@ -56,8 +43,7 @@ public class AdoptionController {
 	private static final String VIEWS_PET_IS_REQUESTED_YET_VIEW = "adoptions/petIsRequestedYet";
 	private static final String VIEWS_SUITORS_LIST = "adoptions/adoptionSuitorsList";
 	private static final String VIEWS_ADOPTION_REQUEST_FORM = "adoptions/petAdoptionRequestForm";
-
-	private static final Logger log = LoggerFactory.getLogger(AdoptionController.class);
+	private static final String VIEWS_REDIRECT = "redirect:/";
 
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
@@ -65,8 +51,9 @@ public class AdoptionController {
 	}
 
 	@Autowired
-	public AdoptionController(AdoptionService adoptionService, PetService petService, OwnerService ownerService,
-			DetailsAdoptionService detailsAdoptionService, UserService userService) {
+	public AdoptionController(AdoptionService adoptionService, PetService petService,
+			OwnerService ownerService, DetailsAdoptionService detailsAdoptionService,
+			UserService userService) {
 		this.adoptionService = adoptionService;
 		this.petService = petService;
 		this.ownerService = ownerService;
@@ -81,7 +68,6 @@ public class AdoptionController {
 		model.put("owner", owner);
 		Collection<Pet> pets = petService.findPetsByOwner(owner);
 		model.put("petsCollection", pets);
-		log.info("La lista de pets: " + pets);
 		Integer numOfPets = petService.findNumberOfPetsByOwner(owner);
 		model.put("numOfPets", numOfPets);
 		List<Pet> myPetsCollection = ownerService.findOwnersPets(userName);
@@ -90,7 +76,8 @@ public class AdoptionController {
 	}
 
 	@GetMapping(value = "/{petId}/givePetInAdoption")
-	public String giveInAdoptionAction(@PathVariable("petId") int petId, RedirectAttributes redirectAttributes)
+	public String giveInAdoptionAction(@PathVariable("petId") int petId,
+			RedirectAttributes redirectAttributes)
 			throws DataAccessException, DuplicatedPetNameException {
 		Adoption adoption = new Adoption();
 		Pet pet = this.petService.findPetById(petId);
@@ -99,7 +86,7 @@ public class AdoptionController {
 		adoption.setOwner(owner);
 		adoption.setPet(pet);
 		LocalDate now = LocalDate.now();
-		adoption.setRequest_date(now);
+		adoption.setRequestDate(now);
 		adoptionService.saveAdoption(adoption);
 		pet.setIsGivenForAdoption(true);
 		petService.savePet(pet);
@@ -127,7 +114,8 @@ public class AdoptionController {
 	}
 
 	@GetMapping(value = "/{adoptionId}/manageAdoptionRequest")
-	public String manageAdoptionRequest(@PathVariable("adoptionId") int adoptionId, ModelMap model) {
+	public String manageAdoptionRequest(@PathVariable("adoptionId") int adoptionId,
+			ModelMap model) {
 		Adoption adoption = adoptionService.findPetsForAdoptionByAdoptionId(adoptionId);
 		model.put("adoption", adoption);
 		return VIEWS_ADOPTION_REQUEST_FORM;
@@ -139,7 +127,8 @@ public class AdoptionController {
 			@RequestParam("careDescription") String careDescription, BindingResult result,
 			RedirectAttributes redirectAttributes, ModelMap model) {
 		if (result.hasErrors()) {
-			model.put("message", "Se han producido errores el enviar la solicitud. Por favor, vuelva a intentarlo.");
+			model.put("message",
+					"Se han producido errores el enviar la solicitud. Por favor, vuelva a intentarlo.");
 			return VIEWS_ADOPTION_REQUEST_FORM;
 		} else {
 			Adoption adoption = adoptionService.findPetsForAdoptionByAdoptionId(adoptionId);
@@ -151,64 +140,64 @@ public class AdoptionController {
 			adoptionService.saveAdoption(adoption);
 			detailsAdoption.setAdoption(adoption);
 			detailsAdoption.setCareDescription(careDescription);
-			detailsAdoption.setRequest_date(LocalDate.now());
+			detailsAdoption.setRequestDate(LocalDate.now());
 			detailsAdoption.setSuitorToAdopt(owner);
 			this.detailsAdoptionService.saveDetailsAdoption(detailsAdoption);
 			redirectAttributes.addFlashAttribute("message",
 					String.format("Has solicitado la adopción de %s", pet.getName()));
-			return "redirect:/";
+			return VIEWS_REDIRECT;
 		}
 	}
 
 	@GetMapping(value = "/{petId}/suitorsList")
 	public String listSuitors(@PathVariable("petId") int petId, ModelMap model) {
-		List<DetailsAdoption> detailsAdoption = detailsAdoptionService.findDetailsAdoptionByPetId(petId);
+		List<DetailsAdoption> detailsAdoption =
+				detailsAdoptionService.findDetailsAdoptionByPetId(petId);
 		Integer numOfSuitors = detailsAdoptionService.findNumberOfSuitorsByPetId(petId);
 		model.put("detailsAdoption", detailsAdoption);
 		model.put("numOfSuitors", numOfSuitors);
 		return VIEWS_SUITORS_LIST;
 	}
 
-	
+
 	@GetMapping(value = "/{adoptionId}/suitor/{suitorId}/approve")
-	public String approveAdoption(@PathVariable("adoptionId") int adoptionId, @PathVariable("suitorId") int suitorId, ModelMap model,
-								RedirectAttributes redirectAttributes) {
+	public String approveAdoption(@PathVariable("adoptionId") int adoptionId,
+			@PathVariable("suitorId") int suitorId, ModelMap model,
+			RedirectAttributes redirectAttributes) {
 
 		Adoption adoption = adoptionService.findPetsForAdoptionByAdoptionId(adoptionId);
-		Boolean isLoggedInUserCorrect = checkCorrectLoggedInUser(adoption);
+		boolean isLoggedInUserCorrect = checkCorrectLoggedInUser(adoption);
 
-		if(!isLoggedInUserCorrect){
+		if (!isLoggedInUserCorrect) {
 			redirectAttributes.addFlashAttribute("message",
-			String.format("No puedes aceptar una adopción de una mascota que no te pertenece"));
-			return "redirect:/";
+					"No puedes aceptar una adopción de una mascota que no te pertenece");
+		} else {
+			Owner suitor = ownerService.findOwnerById(suitorId);
+
+			changePetsOwnership(adoption.getOwner(), adoption.getPet(), suitor);
+			removeAdoptionRequests(adoption);
+
+			redirectAttributes.addFlashAttribute("message",
+					String.format("¡%s ha sido adoptado por %s con exito!",
+							adoption.getPet().getName(),
+							suitor.getFirstName() + suitor.getLastName()));
 		}
-
-		Owner suitor = ownerService.findOwnerById(suitorId);
-
-		changePetsOwnership(adoption.getOwner(), adoption.getPet(), suitor);
-		removeAdoptionRequests(adoption);
-
-		redirectAttributes.addFlashAttribute("message",
-		String.format("¡%s ha sido adoptado por %s con exito!", adoption.getPet().getName(), suitor.getFirstName() + suitor.getLastName()));
-		return "redirect:/";
+		return VIEWS_REDIRECT;
 	}
 
 	@GetMapping("/{adoptionId}/suitor/{suitorId}")
-	public ModelAndView showVet(@PathVariable("adoptionId") int adoptionId, @PathVariable("suitorId") int suitorId) {
+	public ModelAndView showVet(@PathVariable("adoptionId") int adoptionId,
+			@PathVariable("suitorId") int suitorId) {
 		ModelAndView mav = new ModelAndView("adoptions/adoptionRequestDetails");
-		mav.addObject("request", this.detailsAdoptionService.findDetailAdoptionsByAdoptionAndSuitor(adoptionId, suitorId));
+		mav.addObject("request", this.detailsAdoptionService
+				.findDetailAdoptionsByAdoptionAndSuitor(adoptionId, suitorId));
 		return mav;
 	}
 
 	public Boolean checkCorrectLoggedInUser(Adoption adoption) {
 		Owner owner = adoption.getOwner();
 		String userName = userService.getCurrentUserName();
-		if(owner.getUser().getUsername() != userName){
-			return false;
-		}
-		else{
-			return true;
-		}
+		return owner.getUser().getUsername().equals(userName);
 	}
 
 	public void changePetsOwnership(Owner owner, Pet pet, Owner suitor) {
