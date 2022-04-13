@@ -25,7 +25,7 @@
 				<petclinic:menuItem active="${name eq 'owners'}" url="/owners/find"
 					title="find owners">
 					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-					<span>Buscar Propietarios</span>
+					<span>Due�os</span>
 				</petclinic:menuItem>
 
 				<petclinic:menuItem active="${name eq 'vets'}" url="/vets"
@@ -44,6 +44,18 @@
 					title="hotel">
 					<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
 					<span>Hotel</span>
+				</petclinic:menuItem>
+				
+				<petclinic:menuItem active="${name eq 'adoption'}" url="/adoption/petsList"
+					title="hotel">
+					<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
+					<span>Dar en adopci�n</span>
+				</petclinic:menuItem>
+				
+				<petclinic:menuItem active="${name eq 'adoption'}" url="/adoption/petsOnAdoptionList"
+					title="hotel">
+					<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+					<span>Adoptar</span>
 				</petclinic:menuItem>
 
 			</ul>
@@ -73,9 +85,15 @@
 											<p class="text-left">
 												<strong><sec:authentication property="name" /></strong>
 											</p>
-											<p class="text-left">
+											
+													
+													<p class="text-left">
 												<a href="<c:url value="/logout" />"
 													class="btn btn-primary btn-block btn-sm">Salir</a>
+													
+													<p class="text-left">
+											</p>
+											
 											</p>
 										</div>
 									</div>

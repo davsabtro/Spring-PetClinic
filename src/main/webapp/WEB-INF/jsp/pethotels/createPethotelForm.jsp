@@ -10,18 +10,30 @@
 <%@ taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@ page import="java.time.format.DateTimeFormatter"%>
-<style><%@ include file="pupup.less"%></style>
 
+<script>
+	function myFunction() {
+		var popup = document.getElementById("myPopup");
+		popup.classList.toggle("show");
+	}
+</script>
 <petclinic:layout pageName="pethotels">
-
-	<h2>
+<c:choose>
+				<c:when test = "${empty myPetsCollection}">
+				<h1>
 		<security:authorize access="isAuthenticated()"> Hola, <security:authentication
 				property="principal.username" />! 
 </security:authorize>
+				 No puedes reservar ya que no tienes ninguna mascota registrada en Petclinic, <a href="/owners/${owner.id}/pets/new"> <span style = "color: #adff2f;">¡agrega una! </span></h1></a>
+				 </c:when>
+				<c:otherwise>
+<h2>
+		<security:authorize access="isAuthenticated()"> Hola, <security:authentication
+				property="principal.username" />! 
+</security:authorize> 
 		<c:if test="${pethotel['new']}">Reserva una habitación para tu mascota en  </c:if>
 		<img id="png" src="/resources/images/pet_hotel_logo.png" width="100px">
 	</h2>
-
 	<form:form modelAttribute="pethotel" class="form-horizontal"
 		id="add-owner-form">
 		<div class="form-group has-feedback">
@@ -32,8 +44,7 @@
 				name="finishDate" min="${tomorrow}"> <br> </br>
 			<h2>
 				¿Para qué mascota quieres la habitación?
-				<c:choose>
-				
+				<c:choose>		
 				<c:when test="${not empty petHotelDataAboutThisOwner}">
 
 					<div class="popup" onclick="myFunction()">
@@ -45,31 +56,15 @@
 									value="${petHotelData.finishDate}" pattern="yyyy-MM-dd" />
 								</br>
 							</c:forEach>
-
 						</span>
-					</div>
-
-					<script>
-						function myFunction() {
-							var popup = document.getElementById("myPopup");
-							popup.classList.toggle("show");
-						}
-					</script>
+					</div>			
 				</c:when>
 				<c:otherwise>
         <div class="popup" onclick="myFunction()">
 						<span class="glyphicon glyphicon-info-sign"></span> <span
 							class="popuptext" id="myPopup"> <br> Actualmente tus mascotas no tienen reservas
-
 						</span>
 					</div>
-
-					<script>
-						function myFunction() {
-							var popup = document.getElementById("myPopup");
-							popup.classList.toggle("show");
-						}
-					</script>
         <br />
     </c:otherwise>
 </c:choose>
@@ -93,5 +88,6 @@
 		</div>
 	</form:form>
 
-
+ </c:otherwise>
+</c:choose>
 </petclinic:layout>
