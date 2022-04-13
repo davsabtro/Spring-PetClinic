@@ -16,12 +16,12 @@ package org.springframework.samples.petclinic.cause;
 import java.util.Collection;
 import java.util.Map;
 import javax.validation.Valid;
-
-import org.hibernate.validator.internal.util.DomainNameUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.donation.Donation;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,6 +40,8 @@ public class CauseController {
 
 	private static final String VIEWS_CAUSE_CREATE_OR_UPDATE_FORM =
 			"causes/createOrUpdateCauseForm";
+	private static final String VIEWS_CAUSE_LIST = "causes/causesList";
+	private static final String VIEWS_CAUSE_DETAILS = "causes/causeDetails";
 
 	private final CauseService causeService;
 
@@ -54,6 +56,11 @@ public class CauseController {
 		dataBinder.setDisallowedFields("id");
 	}
 
+	@InitBinder("cause")
+	public void initCauseBinder(WebDataBinder dataBinder) {
+		dataBinder.setValidator(new CauseValidator());
+	}
+
 	@GetMapping(value = "/causes/new")
 	public String initCreationForm(Map<String, Object> model) {
 		Cause cause = new Cause();
@@ -62,8 +69,18 @@ public class CauseController {
 	}
 
 	@PostMapping(value = "/causes/new")
-	public String processCreationForm(@Valid Cause cause, BindingResult result) {
+	public String processCreationForm(@Valid Cause cause, BindingResult result, ModelMap model) {
 		if (result.hasErrors()) {
+			final String errorMessage = result.getAllErrors().get(0).getDefaultMessage();
+			if (errorMessage != null && errorMessage.contains("java.lang.NumberFormatException")) {
+				model.clear();
+				model.put("cause", cause);
+				result = new BeanPropertyBindingResult(cause, "cause");
+				result.rejectValue("budgetTarget",
+						"No puedes introducir texto en el importe objetivo de la causa",
+						"No puedes introducir texto en el importe objetivo de la causa");
+				model.put("org.springframework.validation.BindingResult.donation", result);
+			}
 			return VIEWS_CAUSE_CREATE_OR_UPDATE_FORM;
 		} else {
 			this.causeService.saveCause(cause);
@@ -76,7 +93,7 @@ public class CauseController {
 	public String showCauseList(Map<String, Object> model) {
 		Collection<Cause> causes = causeService.findAll();
 		model.put("causes", causes);
-		return "causes/causesList";
+		return VIEWS_CAUSE_LIST;
 	}
 
 	@GetMapping(value = {"/causes/{id}/edit"})
@@ -89,11 +106,11 @@ public class CauseController {
 	@GetMapping(value = {"/causes/{id}"})
 	public String showCauseInfo(@PathVariable("id") int causeId, Model model) {
 		Cause cause = causeService.findCauseById(causeId);
-		Collection<Donation> donationList=causeService.findDonationListOfCauseById(causeId);
+		Collection<Donation> donationList = causeService.findDonationListOfCauseById(causeId);
 		model.addAttribute(cause);
 		model.addAttribute(donationList);
 
-		return "causes/causeDetails";
+		return VIEWS_CAUSE_DETAILS;
 	}
 
 	@PostMapping(value = "/causes/{id}/edit")

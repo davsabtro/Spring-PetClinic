@@ -32,14 +32,11 @@ public class DonationController {
 
 	private final DonationService donationService;
 	private final CauseService causeService;
-	private final UserService userService;
 
 	@Autowired
-	public DonationController(DonationService donationService, CauseService causeService,
-			UserService userService) {
+	public DonationController(DonationService donationService, CauseService causeService) {
 		this.donationService = donationService;
 		this.causeService = causeService;
-		this.userService = userService;
 	}
 
 	@InitBinder
@@ -52,10 +49,7 @@ public class DonationController {
 		dataBinder.setValidator(new DonationValidator());
 	}
 
-	private User getLoggedUser() {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		return userService.findUser(auth.getName()).orElseThrow(NoSuchElementException::new);
-	}
+
 
 	@GetMapping("/new")
 	public String initCreationForm(@PathVariable(name = "causeId") int causeId, Model model) {
@@ -66,23 +60,26 @@ public class DonationController {
 
 	@PostMapping("/new")
 	public String processCreationForm(HttpSession session,
-			@PathVariable(name = "causeId") int causeId, @Valid Donation donation, BindingResult result, ModelMap model) {
+			@PathVariable(name = "causeId") int causeId, @Valid Donation donation,
+			BindingResult result, ModelMap model) {
 		if (result.hasErrors()) {
-			if (result.getAllErrors().get(0).getDefaultMessage().contains("java.lang.NumberFormatException")) {	
-				System.out.println(model.values());
+			final String errorMessage = result.getAllErrors().get(0).getDefaultMessage();
+			if (errorMessage != null && errorMessage.contains("java.lang.NumberFormatException")) {
 				model.clear();
 				model.put("donation", donation);
-                result = new BeanPropertyBindingResult(donation, "donation");
-				result.rejectValue("amount", "No puedes introducir texto en el importe de la donación", "No puedes introducir texto en el importe de la donación");
+				result = new BeanPropertyBindingResult(donation, "donation");
+				result.rejectValue("amount",
+						"No puedes introducir texto en el importe de la donación",
+						"No puedes introducir texto en el importe de la donación");
 				model.put("org.springframework.validation.BindingResult.donation", result);
-            }
+			}
 			return VIEWS_DONATION_CREATE_FORM;
 
 		} else {
 			Cause cause = causeService.findCauseById(causeId);
 			donation.setCause(cause);
 			donation.setDonationDate(LocalDate.now());
-			donation.setClient(getLoggedUser());
+			donation.setClient(donationService.getLoggedUser());
 			try {
 				donationService.saveDonation(donation);
 				session.setAttribute("message",

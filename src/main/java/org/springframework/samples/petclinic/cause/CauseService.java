@@ -31,6 +31,7 @@ public class CauseService {
 		this.causeRepository = causeRepository;
 	}
 
+	@Transactional(readOnly = true)
 	public Collection<Cause> findAll() {
 		return causeRepository.findAll();
 	}
@@ -40,11 +41,12 @@ public class CauseService {
 		causeRepository.save(cause);
 	}
 
-
+	@Transactional(readOnly = true)
 	public Cause findCauseById(int causeId) {
 		return causeRepository.findById(causeId);
 	}
 
+	@Transactional(readOnly = true)
 	public Collection<Donation> findDonationListOfCauseById(int causeId) {
 		return causeRepository.findDonationListOfCauseById(causeId);
 	}
