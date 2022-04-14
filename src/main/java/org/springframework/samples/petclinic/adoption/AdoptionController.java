@@ -126,9 +126,8 @@ public class AdoptionController {
 			@RequestParam("petId") int petId, @RequestParam("adopterId") int adopterId,
 			@RequestParam("careDescription") String careDescription, BindingResult result,
 			RedirectAttributes redirectAttributes, ModelMap model) {
-		if (result.hasErrors()) {
-			model.put("message",
-					"Se han producido errores el enviar la solicitud. Por favor, vuelva a intentarlo.");
+		if (result.hasErrors() || careDescription.isEmpty()) {
+			model.put("message", "El campo de la solicitud no puede estar vacío");
 			return VIEWS_ADOPTION_REQUEST_FORM;
 		} else {
 			Adoption adoption = adoptionService.findPetsForAdoptionByAdoptionId(adoptionId);

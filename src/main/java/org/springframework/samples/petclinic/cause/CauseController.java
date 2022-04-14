@@ -23,11 +23,13 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * @author Juergen Hoeller
@@ -42,6 +44,8 @@ public class CauseController {
 			"causes/createOrUpdateCauseForm";
 	private static final String VIEWS_CAUSE_LIST = "causes/causesList";
 	private static final String VIEWS_CAUSE_DETAILS = "causes/causeDetails";
+	private static final String VIEWS_CAUSES_CREATE_REDIRECT = "redirect:/causes/new";
+
 
 	private final CauseService causeService;
 
@@ -69,10 +73,13 @@ public class CauseController {
 	}
 
 	@PostMapping(value = "/causes/new")
-	public String processCreationForm(@Valid Cause cause, BindingResult result, ModelMap model) {
-		if (result.hasErrors()) {
-			final String errorMessage = result.getAllErrors().get(0).getDefaultMessage();
-			if (errorMessage != null && errorMessage.contains("java.lang.NumberFormatException")) {
+	public String processCreationForm(@Valid Cause cause, BindingResult result, ModelMap model,
+			RedirectAttributes redirectAttributes) {
+		if (result.hasErrors() || cause.getName().isEmpty() || cause.getDescription().isEmpty()
+				|| cause.getOrganization().isEmpty()) {
+			final String allErrors = result.getAllErrors().stream().map(ObjectError::toString)
+					.reduce((e1, e2) -> e1 + ", " + e2).orElse("");
+			if (allErrors != null && allErrors.contains("java.lang.NumberFormatException")) {
 				model.clear();
 				model.put("cause", cause);
 				result = new BeanPropertyBindingResult(cause, "cause");
@@ -81,7 +88,8 @@ public class CauseController {
 						"No puedes introducir texto en el importe objetivo de la causa");
 				model.put("org.springframework.validation.BindingResult.donation", result);
 			}
-			return VIEWS_CAUSE_CREATE_OR_UPDATE_FORM;
+			redirectAttributes.addFlashAttribute("message", "Todos los campos son obligatorios");
+			return VIEWS_CAUSES_CREATE_REDIRECT;
 		} else {
 			this.causeService.saveCause(cause);
 

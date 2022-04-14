@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -93,20 +93,21 @@ public class PetHotelController {
 
 	@PostMapping(value = "/new")
 	public String processCreationForm(
-			@RequestParam("startDate") @DateTimeFormat(
-					iso = DateTimeFormat.ISO.DATE_TIME) Date startDate,
-			@RequestParam("finishDate") @DateTimeFormat(
-					iso = DateTimeFormat.ISO.DATE_TIME) Date finishDate,
-			@RequestParam("pet") Pet pet, @Valid PetHotel pethotel, BindingResult result,
-			RedirectAttributes redirectAttributes, ModelMap model) {
+			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date startDate,
+			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date finishDate, Pet pet,
+			@Valid PetHotel pethotel, BindingResult result, RedirectAttributes redirectAttributes,
+			ModelMap model) {
 
 		User currentUser =
 				(User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String userName = currentUser.getUsername();
 		Owner owner = ownerService.findOwnerUserName(userName);
 		String redirect = "";
-		if (result.hasErrors()) {
-			return VIEWS_PETHOTEL_CREATE_FORM;
+
+		if (result.hasErrors() || Objects.isNull(pet) || Objects.isNull(startDate)
+				|| Objects.isNull(finishDate)) {
+			redirectAttributes.addFlashAttribute("message", "Todos los campos son obligatorios");
+			return VIEWS_PETHOTEL_CREATE_REDIRECT;
 		}
 		// validación de fecha
 		else if (startDate.after(finishDate)) {
