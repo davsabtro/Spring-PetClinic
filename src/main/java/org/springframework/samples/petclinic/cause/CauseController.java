@@ -23,7 +23,6 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -46,9 +45,7 @@ public class CauseController {
 	private static final String VIEWS_CAUSE_DETAILS = "causes/causeDetails";
 	private static final String VIEWS_CAUSES_CREATE_REDIRECT = "redirect:/causes/new";
 
-
 	private final CauseService causeService;
-
 
 	@Autowired
 	public CauseController(CauseService causeService) {
@@ -75,21 +72,23 @@ public class CauseController {
 	@PostMapping(value = "/causes/new")
 	public String processCreationForm(@Valid Cause cause, BindingResult result, ModelMap model,
 			RedirectAttributes redirectAttributes) {
-		if (result.hasErrors() || cause.getName().isEmpty() || cause.getDescription().isEmpty()
+		if (cause.getName().isEmpty() || cause.getDescription().isEmpty()
 				|| cause.getOrganization().isEmpty()) {
-			final String allErrors = result.getAllErrors().stream().map(ObjectError::toString)
-					.reduce((e1, e2) -> e1 + ", " + e2).orElse("");
-			if (allErrors != null && allErrors.contains("java.lang.NumberFormatException")) {
+			redirectAttributes.addFlashAttribute("message", "Todos los campos son obligatorios");
+			return VIEWS_CAUSES_CREATE_REDIRECT;
+		} else if (result.hasErrors()) {
+			final String errorMessage = result.getAllErrors().get(0).getDefaultMessage();
+			if (errorMessage != null && errorMessage.contains("java.lang.NumberFormatException")) {
 				model.clear();
 				model.put("cause", cause);
 				result = new BeanPropertyBindingResult(cause, "cause");
 				result.rejectValue("budgetTarget",
 						"No puedes introducir texto en el importe objetivo de la causa",
 						"No puedes introducir texto en el importe objetivo de la causa");
-				model.put("org.springframework.validation.BindingResult.donation", result);
+				model.put("org.springframework.validation.BindingResult.cause", result);
 			}
-			redirectAttributes.addFlashAttribute("message", "Todos los campos son obligatorios");
-			return VIEWS_CAUSES_CREATE_REDIRECT;
+			return VIEWS_CAUSE_CREATE_OR_UPDATE_FORM;
+
 		} else {
 			this.causeService.saveCause(cause);
 
@@ -133,7 +132,6 @@ public class CauseController {
 		}
 	}
 
-
 	@GetMapping("causes/{id}/delete")
 	public String deleteCause(@PathVariable("id") int id) {
 		Cause cause = causeService.findCauseById(id);
@@ -141,6 +139,5 @@ public class CauseController {
 		return "redirect:/causes";
 
 	}
-
 
 }

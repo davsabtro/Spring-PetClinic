@@ -122,13 +122,13 @@ public class AdoptionController {
 	}
 
 	@PostMapping(value = "/{adoptionId}/manageAdoptionRequest")
-	public String adoptionRequest(@Valid Adoption adopt, @RequestParam("adoptionId") int adoptionId,
-			@RequestParam("petId") int petId, @RequestParam("adopterId") int adopterId,
-			@RequestParam("careDescription") String careDescription, BindingResult result,
+	public String adoptionRequest(@Valid Adoption adopt, int adoptionId, int petId,
+			@RequestParam("adopterId") int adopterId, String careDescription, BindingResult result,
 			RedirectAttributes redirectAttributes, ModelMap model) {
 		if (result.hasErrors() || careDescription.isEmpty()) {
-			model.put("message", "El campo de la solicitud no puede estar vacío");
-			return VIEWS_ADOPTION_REQUEST_FORM;
+			redirectAttributes.addFlashAttribute("message",
+					"El campo de la solicitud no puede estar vacío");
+			return "redirect:/adoption/" + adoptionId + "/manageAdoptionRequest";
 		} else {
 			Adoption adoption = adoptionService.findPetsForAdoptionByAdoptionId(adoptionId);
 			DetailsAdoption detailsAdoption = new DetailsAdoption();
@@ -157,7 +157,6 @@ public class AdoptionController {
 		model.put("numOfSuitors", numOfSuitors);
 		return VIEWS_SUITORS_LIST;
 	}
-
 
 	@GetMapping(value = "/{adoptionId}/suitor/{suitorId}/approve")
 	public String approveAdoption(@PathVariable("adoptionId") int adoptionId,
