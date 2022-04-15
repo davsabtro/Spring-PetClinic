@@ -1,3 +1,4 @@
+<%@tag pageEncoding="UTF-8" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
@@ -22,16 +23,10 @@
 		<div class="navbar-collapse collapse" id="main-navbar">
 			<ul class="nav navbar-nav">
 
-				<petclinic:menuItem active="${name eq 'home'}" url="/"
-					title="home page">
-					<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-					<span>Inicio</span>
-				</petclinic:menuItem>
-
 				<petclinic:menuItem active="${name eq 'owners'}" url="/owners/find"
 					title="find owners">
 					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-					<span>Buscar Propietarios</span>
+					<span>Dueños</span>
 				</petclinic:menuItem>
 
 				<petclinic:menuItem active="${name eq 'vets'}" url="/vets"
@@ -40,16 +35,28 @@
 					<span>Veterinarios</span>
 				</petclinic:menuItem>
 
-				<petclinic:menuItem active="${name eq 'error'}" url="/oups"
-					title="trigger a RuntimeException to see how it is handled">
-					<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-					<span>Error</span>
+				<petclinic:menuItem active="${name eq 'causes'}" url="/causes"
+					title="causes">
+					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span>Causas</span>
 				</petclinic:menuItem>
 				
 				<petclinic:menuItem active="${name eq 'pethotels'}" url="/pethotels/new"
 					title="hotel">
 					<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
 					<span>Hotel</span>
+				</petclinic:menuItem>
+				
+				<petclinic:menuItem active="${name eq 'adoption'}" url="/adoption/petsList"
+					title="hotel">
+					<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
+					<span>Dar en adopción</span>
+				</petclinic:menuItem>
+				
+				<petclinic:menuItem active="${name eq 'adoption'}" url="/adoption/petsOnAdoptionList"
+					title="hotel">
+					<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+					<span>Adoptar</span>
 				</petclinic:menuItem>
 
 			</ul>
@@ -79,9 +86,15 @@
 											<p class="text-left">
 												<strong><sec:authentication property="name" /></strong>
 											</p>
-											<p class="text-left">
+											
+													
+													<p class="text-left">
 												<a href="<c:url value="/logout" />"
 													class="btn btn-primary btn-block btn-sm">Salir</a>
+													
+													<p class="text-left">
+											</p>
+											
 											</p>
 										</div>
 									</div>

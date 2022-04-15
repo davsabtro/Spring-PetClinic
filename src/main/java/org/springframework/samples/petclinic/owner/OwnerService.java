@@ -15,6 +15,7 @@ package org.springframework.samples.petclinic.owner;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,5 +96,7 @@ public class OwnerService {
 		ownerRepository.deleteById(ownerId);
 	}
 
-
+	public List<Pet> findOwnersPets(String userName) {
+		return ownerRepository.findOwnersPets(userName);
+	}
 }

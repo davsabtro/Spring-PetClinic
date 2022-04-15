@@ -1,7 +1,6 @@
 package org.springframework.samples.petclinic.pethotel;
 
 import java.util.Date;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -23,11 +22,9 @@ public class PetHotel extends BaseEntity {
 	@NotNull
 	private Pet pet;
 
-	@Column(name = "start_date")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date startDate;
 
-	@Column(name = "finish_date")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date finishDate;
 

@@ -22,7 +22,10 @@ import java.util.Collection;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.samples.petclinic.owner.OwnerService;
 import org.springframework.samples.petclinic.util.EntityUtils;
 import org.springframework.stereotype.Service;
 
@@ -60,8 +63,12 @@ import org.springframework.stereotype.Service;
 class VetServiceTests {
 
 	@Autowired
-	protected VetService vetService;	
-
+	protected VetService vetService;
+	
+	@MockBean
+	private ConversionService conversionService;
+	
+	
 	@Test
 	void shouldFindVets() {
 		Collection<Vet> vets = this.vetService.findVets();
