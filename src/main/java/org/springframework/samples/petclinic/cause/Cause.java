@@ -13,16 +13,20 @@
  */
 package org.springframework.samples.petclinic.cause;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import org.springframework.samples.petclinic.model.NamedEntity;
+import org.springframework.samples.petclinic.model.BaseEntity;
 
 @Entity
 @Table(name = "causes")
-public class Cause extends NamedEntity {
+public class Cause extends BaseEntity {
+
+	@Column(name = "name")
+	private String name;
 
 	@NotEmpty
 	@NotNull
@@ -40,6 +44,14 @@ public class Cause extends NamedEntity {
 	public boolean isClosed() {
 		// A cause is closed if it has reached its target.
 		return this.donated >= this.budgetTarget;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public void setDescription(String description) {

@@ -29,13 +29,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+
+		String owner = "owner";
+		String admin = "admin";
+
 		http.authorizeRequests().antMatchers("/resources/**", "/webjars/**", "/h2-console/**")
 				.permitAll().antMatchers(HttpMethod.GET, "/", "/oups").permitAll()
-				.antMatchers("/pethotels/**").hasAnyAuthority("owner").antMatchers("/users/new")
-				.permitAll().antMatchers("/admin/**").hasAnyAuthority("admin")
-				.antMatchers("/owners/**").hasAnyAuthority("owner", "admin").antMatchers("/vets/**")
+				.antMatchers("/pethotels/**").hasAnyAuthority(owner).antMatchers("/users/new")
+				.permitAll().antMatchers("/admin/**").hasAnyAuthority(admin)
+				.antMatchers("/owners/**").hasAnyAuthority(owner, admin).antMatchers("/vets/**")
 				.authenticated().antMatchers("/causes/**").authenticated()
-				.antMatchers("/adoption/**").hasAnyAuthority("owner").anyRequest().denyAll().and()
+				.antMatchers("/adoption/**").hasAnyAuthority(owner).anyRequest().denyAll().and()
 				.formLogin()
 				/* .loginPage("/login") */
 				.failureUrl("/login-error").and().logout().logoutSuccessUrl("/");

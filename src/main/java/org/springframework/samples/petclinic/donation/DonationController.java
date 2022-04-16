@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.cause.Cause;
 import org.springframework.samples.petclinic.cause.CauseService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -70,7 +69,7 @@ public class DonationController {
 			return VIEWS_DONATION_CREATE_FORM;
 
 		} else {
-			Cause cause = causeService.findCauseById(causeId);
+			var cause = causeService.findCauseById(causeId);
 			donation.setCause(cause);
 			donation.setDonationDate(LocalDate.now());
 			donation.setClient(donationService.getLoggedUser());

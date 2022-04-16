@@ -21,7 +21,7 @@ public class CauseValidator implements Validator {
 
 	@Override
 	public void validate(Object obj, Errors errors) {
-		Cause cause = (Cause) obj;
+		var cause = (Cause) obj;
 
 		if (cause.getBudgetTarget() <= 0) {
 			errors.rejectValue("budgetTarget", "El objetivo de la causa debe ser mayor que cero",
