@@ -21,21 +21,23 @@ public class DonationValidator implements Validator {
 
 	@Override
 	public void validate(Object obj, Errors errors) {
-		Donation donation = (Donation) obj;
+		var donation = (Donation) obj;
+
+		String amount = "amount";
 
 		if (donation.getAmount() == null) {
-			errors.rejectValue("amount", "La donación no puede ser nula",
+			errors.rejectValue(amount, "La donación no puede ser nula",
 					"La donación no puede ser nula");
 		}
 
 		if (donation.getAmount() <= 0) {
-			errors.rejectValue("amount", "El importe de donacion debe ser mayor que cero",
+			errors.rejectValue(amount, "El importe de donacion debe ser mayor que cero",
 					"El importe de donacion debe ser mayor que cero");
 		}
 
 		String[] splitter = donation.getAmount().toString().split("\\.");
 		if (splitter[1].length() > 2) {
-			errors.rejectValue("amount", "El importe no debe de tener más de dos números decimales",
+			errors.rejectValue(amount, "El importe no debe de tener más de dos números decimales",
 					"El importe no debe de tener más de dos números decimales");
 		}
 	}

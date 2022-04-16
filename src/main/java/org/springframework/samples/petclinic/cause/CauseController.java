@@ -64,7 +64,7 @@ public class CauseController {
 
 	@GetMapping(value = "/causes/new")
 	public String initCreationForm(Map<String, Object> model) {
-		Cause cause = new Cause();
+		var cause = new Cause();
 		model.put("cause", cause);
 		return VIEWS_CAUSE_CREATE_OR_UPDATE_FORM;
 	}
@@ -105,14 +105,14 @@ public class CauseController {
 
 	@GetMapping(value = {"/causes/{id}/edit"})
 	public String editCauseProfile(@PathVariable("id") int causeId, Model model) {
-		Cause cause = causeService.findCauseById(causeId);
+		var cause = causeService.findCauseById(causeId);
 		model.addAttribute(cause);
 		return VIEWS_CAUSE_CREATE_OR_UPDATE_FORM;
 	}
 
 	@GetMapping(value = {"/causes/{id}"})
 	public String showCauseInfo(@PathVariable("id") int causeId, Model model) {
-		Cause cause = causeService.findCauseById(causeId);
+		var cause = causeService.findCauseById(causeId);
 		Collection<Donation> donationList = causeService.findDonationListOfCauseById(causeId);
 		model.addAttribute(cause);
 		model.addAttribute(donationList);
@@ -134,7 +134,7 @@ public class CauseController {
 
 	@GetMapping("causes/{id}/delete")
 	public String deleteCause(@PathVariable("id") int id) {
-		Cause cause = causeService.findCauseById(id);
+		var cause = causeService.findCauseById(id);
 		causeService.deleteCause(cause);
 		return "redirect:/causes";
 

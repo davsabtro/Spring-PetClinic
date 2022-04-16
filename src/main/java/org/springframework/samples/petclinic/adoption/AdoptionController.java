@@ -63,8 +63,8 @@ public class AdoptionController {
 
 	@GetMapping(value = "/petsList")
 	public String listMyOwnPetsForGiveItsInAdoption(ModelMap model) {
-		String userName = userService.getCurrentUserName();
-		Owner owner = ownerService.findOwnerUserName(userName);
+		var userName = userService.getCurrentUserName();
+		var owner = ownerService.findOwnerUserName(userName);
 		model.put("owner", owner);
 		Collection<Pet> pets = petService.findPetsByOwner(owner);
 		model.put("petsCollection", pets);
@@ -79,17 +79,18 @@ public class AdoptionController {
 	public String giveInAdoptionAction(@PathVariable("petId") int petId,
 			RedirectAttributes redirectAttributes)
 			throws DataAccessException, DuplicatedPetNameException {
-		Adoption adoption = new Adoption();
-		Pet pet = this.petService.findPetById(petId);
-		String userName = userService.getCurrentUserName();
-		Owner owner = ownerService.findOwnerUserName(userName);
+		var adoption = new Adoption();
+		var pet = this.petService.findPetById(petId);
+		var userName = userService.getCurrentUserName();
+		var owner = ownerService.findOwnerUserName(userName);
 		adoption.setOwner(owner);
 		adoption.setPet(pet);
-		LocalDate now = LocalDate.now();
+		var now = LocalDate.now();
 		adoption.setRequestDate(now);
 		adoptionService.saveAdoption(adoption);
 		pet.setIsGivenForAdoption(true);
 		petService.savePet(pet);
+
 		redirectAttributes.addFlashAttribute("message",
 				String.format("Has agregado la mascota %s en la lista de adopción", pet.getName()));
 		return "redirect:/adoption/petsList";
@@ -99,13 +100,13 @@ public class AdoptionController {
 	public String listPetsOnAdoption(ModelMap model) {
 		Collection<Adoption> petsForAdoption = adoptionService.findPetsForAdoption();
 		model.put("petsCollection", petsForAdoption);
-		Integer numOfPets = adoptionService.findNumberOfPetsForAdoption();
+		var numOfPets = adoptionService.findNumberOfPetsForAdoption();
 		model.put("numOfPets", numOfPets);
-		String userName = userService.getCurrentUserName();
+		var userName = userService.getCurrentUserName();
 		model.put("currentUserName", userName);
-		Owner owner = ownerService.findOwnerUserName(userName);
+		var owner = ownerService.findOwnerUserName(userName);
 		model.put("owner", owner);
-		DetailsAdoption detailsAdoption = detailsAdoptionService.findDetailAdoptionsByOwner(owner);
+		var detailsAdoption = detailsAdoptionService.findDetailAdoptionsByOwner(owner);
 		if (!Objects.isNull(detailsAdoption)) {
 			model.put("detailsAdoption", detailsAdoption);
 			return VIEWS_PET_IS_REQUESTED_YET_VIEW;
@@ -116,7 +117,7 @@ public class AdoptionController {
 	@GetMapping(value = "/{adoptionId}/manageAdoptionRequest")
 	public String manageAdoptionRequest(@PathVariable("adoptionId") int adoptionId,
 			ModelMap model) {
-		Adoption adoption = adoptionService.findPetsForAdoptionByAdoptionId(adoptionId);
+		var adoption = adoptionService.findPetsForAdoptionByAdoptionId(adoptionId);
 		model.put("adoption", adoption);
 		return VIEWS_ADOPTION_REQUEST_FORM;
 	}
@@ -130,11 +131,11 @@ public class AdoptionController {
 					"El campo de la solicitud no puede estar vacío");
 			return "redirect:/adoption/" + adoptionId + "/manageAdoptionRequest";
 		} else {
-			Adoption adoption = adoptionService.findPetsForAdoptionByAdoptionId(adoptionId);
-			DetailsAdoption detailsAdoption = new DetailsAdoption();
-			Pet pet = this.petService.findPetById(petId);
-			String userName = userService.getCurrentUserName();
-			Owner owner = ownerService.findOwnerUserName(userName);
+			var adoption = adoptionService.findPetsForAdoptionByAdoptionId(adoptionId);
+			var detailsAdoption = new DetailsAdoption();
+			var pet = this.petService.findPetById(petId);
+			var userName = userService.getCurrentUserName();
+			var owner = ownerService.findOwnerUserName(userName);
 			redirectAttributes.addFlashAttribute("owner", owner);
 			adoptionService.saveAdoption(adoption);
 			detailsAdoption.setAdoption(adoption);
@@ -152,7 +153,7 @@ public class AdoptionController {
 	public String listSuitors(@PathVariable("petId") int petId, ModelMap model) {
 		List<DetailsAdoption> detailsAdoption =
 				detailsAdoptionService.findDetailsAdoptionByPetId(petId);
-		Integer numOfSuitors = detailsAdoptionService.findNumberOfSuitorsByPetId(petId);
+		var numOfSuitors = detailsAdoptionService.findNumberOfSuitorsByPetId(petId);
 		model.put("detailsAdoption", detailsAdoption);
 		model.put("numOfSuitors", numOfSuitors);
 		return VIEWS_SUITORS_LIST;
@@ -163,14 +164,14 @@ public class AdoptionController {
 			@PathVariable("suitorId") int suitorId, ModelMap model,
 			RedirectAttributes redirectAttributes) {
 
-		Adoption adoption = adoptionService.findPetsForAdoptionByAdoptionId(adoptionId);
-		boolean isLoggedInUserCorrect = checkCorrectLoggedInUser(adoption);
+		var adoption = adoptionService.findPetsForAdoptionByAdoptionId(adoptionId);
+		var isLoggedInUserCorrect = checkCorrectLoggedInUser(adoption);
 
 		if (!isLoggedInUserCorrect) {
 			redirectAttributes.addFlashAttribute("message",
 					"No puedes aceptar una adopción de una mascota que no te pertenece");
 		} else {
-			Owner suitor = ownerService.findOwnerById(suitorId);
+			var suitor = ownerService.findOwnerById(suitorId);
 
 			changePetsOwnership(adoption.getOwner(), adoption.getPet(), suitor);
 			removeAdoptionRequests(adoption);
@@ -192,9 +193,9 @@ public class AdoptionController {
 		return mav;
 	}
 
-	public Boolean checkCorrectLoggedInUser(Adoption adoption) {
-		Owner owner = adoption.getOwner();
-		String userName = userService.getCurrentUserName();
+	public boolean checkCorrectLoggedInUser(Adoption adoption) {
+		var owner = adoption.getOwner();
+		var userName = userService.getCurrentUserName();
 		return owner.getUser().getUsername().equals(userName);
 	}
 
@@ -210,7 +211,7 @@ public class AdoptionController {
 	}
 
 	public void removeAdoptionRequests(Adoption adoption) {
-		Integer adoptionId = adoption.getId();
+		var adoptionId = adoption.getId();
 		detailsAdoptionService.deleteDetailsByAdoption(adoptionId);
 		adoptionService.deleteAdoptionRequests(adoptionId);
 	}
