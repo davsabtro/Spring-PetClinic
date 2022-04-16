@@ -2,11 +2,9 @@ package org.springframework.samples.petclinic.donation;
 
 import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.cause.Cause;
 import org.springframework.samples.petclinic.cause.CauseService;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.user.UserService;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +28,7 @@ public class DonationService {
 
 	@Transactional
 	public void saveDonation(Donation donation) {
-		Cause cause = donation.getCause();
+		var cause = donation.getCause();
 		if (cause.isClosed())
 			throw new IllegalArgumentException();
 		double leftToFulfill = cause.getBudgetTarget() - cause.getDonated();
@@ -41,7 +39,7 @@ public class DonationService {
 	}
 
 	public User getLoggedUser() {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		var auth = SecurityContextHolder.getContext().getAuthentication();
 		return userService.findUser(auth.getName()).orElseThrow(NoSuchElementException::new);
 	}
 

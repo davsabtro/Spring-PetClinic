@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.owner.OwnerService;
 import org.springframework.samples.petclinic.pet.Pet;
 import org.springframework.samples.petclinic.pet.PetService;
@@ -37,6 +36,8 @@ public class PetHotelController {
 
 	private static final String VIEWS_PETHOTEL_CREATE_FORM = "pethotels/createPethotelForm";
 	private static final String VIEWS_PETHOTEL_CREATE_REDIRECT = "redirect:/pethotels/new";
+	private static final String MESSAGE = "message";
+
 	private PetHotelService petHotelService;
 	private PetService petService;
 	private OwnerService ownerService;
@@ -61,23 +62,23 @@ public class PetHotelController {
 	@InitBinder
 	public void bindingPreparation(WebDataBinder binder) {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		CustomDateEditor orderDateEditor = new CustomDateEditor(dateFormat, true);
+		var orderDateEditor = new CustomDateEditor(dateFormat, true);
 		binder.registerCustomEditor(Date.class, orderDateEditor);
 	}
 
 	@GetMapping(value = "/new")
 	public String initCreationForm(Map<String, Object> model) {
-		PetHotel pethotel = new PetHotel();
+		var pethotel = new PetHotel();
 		model.put("pethotel", pethotel);
-		User currentUser =
+		var currentUser =
 				(User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String userName = currentUser.getUsername();
-		Owner owner = ownerService.findOwnerUserName(userName);
+		var userName = currentUser.getUsername();
+		var owner = ownerService.findOwnerUserName(userName);
 		Collection<Pet> pets = petService.findPetsByOwner(owner);
 		model.put("petsCollection", pets);
-		String today = LocalDate.now().toString();
+		var today = LocalDate.now().toString();
 		model.put("today", today);
-		String tomorrow = LocalDate.now().plusDays(1).toString();
+		var tomorrow = LocalDate.now().plusDays(1).toString();
 		model.put("tomorrow", tomorrow);
 		Collection<PetHotel> petHotelDataAboutThisOwner =
 				petHotelService.findPetHotelDataByOwner(owner);
@@ -98,107 +99,97 @@ public class PetHotelController {
 			@Valid PetHotel pethotel, BindingResult result, RedirectAttributes redirectAttributes,
 			ModelMap model) {
 
-		User currentUser =
+		var currentUser =
 				(User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String userName = currentUser.getUsername();
-		Owner owner = ownerService.findOwnerUserName(userName);
-		String redirect = "";
+		var owner = ownerService.findOwnerUserName(userName);
+		var redirect = "";
+
 
 		if (result.hasErrors() || Objects.isNull(pet) || Objects.isNull(startDate)
 				|| Objects.isNull(finishDate)) {
-			redirectAttributes.addFlashAttribute("message", "Todos los campos son obligatorios");
+			redirectAttributes.addFlashAttribute(MESSAGE, "Todos los campos son obligatorios");
 			return VIEWS_PETHOTEL_CREATE_REDIRECT;
 		}
 		// validación de fecha
-		else if (startDate.after(finishDate)) {
-			redirect = VIEWS_PETHOTEL_CREATE_REDIRECT;
-			String message = String.format(
+		if (startDate.after(finishDate)) {
+			var message = String.format(
 					"La fecha de entrada (%s) no puede ser superior a la de salida (%s)",
 					conversionService.convert(startDate, String.class),
 					conversionService.convert(finishDate, String.class));
-			redirectAttributes.addFlashAttribute("message", message);
+			redirectAttributes.addFlashAttribute(MESSAGE, message);
+			return VIEWS_PETHOTEL_CREATE_REDIRECT;
 
 		} else if (startDate.equals(finishDate)) {
-			redirect = VIEWS_PETHOTEL_CREATE_REDIRECT;
-			String message =
+			var message =
 					String.format("La fecha de entrada (%s) no puede ser igual a la de salida (%s)",
 							conversionService.convert(startDate, String.class),
 							conversionService.convert(finishDate, String.class));
-			redirectAttributes.addFlashAttribute("message", message);
+			redirectAttributes.addFlashAttribute(MESSAGE, message);
+			return VIEWS_PETHOTEL_CREATE_REDIRECT;
 		}
 
 		// si no hay errores y la fecha se valida correctamente
+		Collection<PetHotel> petHotelDataAboutThisPet = petHotelService.findPetHotelDataByPet(pet);
+		// si hay al menos una reserva, antes de reservar, obtenemos los datos de ésta
+		if (!petHotelDataAboutThisPet.isEmpty()) {
+			Integer numberOfHotelReservationsForThisPet =
+					petHotelService.findNumberOfReservationsByPet(pet);
+
+			PetHotel petWithRoomForThisDate = petHotelDataAboutThisPet.stream()
+					.filter(phData -> this.petHotelService.checkPetHasRoomForThisDate(startDate,
+							finishDate, phData.getStartDate(), phData.getFinishDate()))
+					.findAny().orElse(null);
+
+			if (petWithRoomForThisDate != null) {
+				var bookedStartDate = petWithRoomForThisDate.getStartDate();
+				var bookedFinishedDate = petWithRoomForThisDate.getFinishDate();
+
+				// si hay al menos una reserva en las fechas elegidas, configuramos mensaje de
+				// error
+				if (numberOfHotelReservationsForThisPet.equals(1)) {
+					log.info("El Numero de reservas es igual a 1");
+					var mssg = String.format(
+							"Ya tienes una reserva desde %s hasta %s para tu mascota %s. ¡Elige otra fecha!",
+							conversionService.convert(bookedStartDate, String.class),
+							conversionService.convert(bookedFinishedDate, String.class), pet);
+					redirectAttributes.addFlashAttribute(MESSAGE, mssg);
+
+				} else if (numberOfHotelReservationsForThisPet > 1) {
+					log.info("Hay más de 1 reserva");
+					var mssg = String.format(
+							"Hay algunas reservas para tu mascota %s que coinciden con las fechas elegidas. ¡Elige otra fecha!",
+							pet);
+					redirectAttributes.addFlashAttribute(MESSAGE, mssg);
+				}
+				return VIEWS_PETHOTEL_CREATE_REDIRECT;
+			}
+			// si no hay ninguna reserva en las fechas elegidas, reservamos el hotel.
+			redirect = "redirect:/";
+			var message = String.format(
+					"Has reservado una habitacion para %s desde %s hasta %s. ¡Recibirás un correo de confirmación!",
+					pet, conversionService.convert(startDate, String.class),
+					conversionService.convert(finishDate, String.class));
+			redirectAttributes.addFlashAttribute(MESSAGE, message);
+			pethotel.setFinishDate(finishDate);
+			pethotel.setStartDate(startDate);
+			pethotel.setPet(pet);
+			pethotel.setOwner(owner);
+			this.petHotelService.savePetHotel(pethotel);
+		}
+		// si no había ninguna reserva en la BD para la mascota elegida, reservamos directamente
 		else {
-			Collection<PetHotel> petHotelDataAboutThisPet =
-					petHotelService.findPetHotelDataByPet(pet);
-			// si hay al menos una reserva, antes de reservar, obtenemos los datos de ésta
-			if (!petHotelDataAboutThisPet.isEmpty()) {
-				Integer numberOfHotelReservationsForThisPet =
-						petHotelService.findNumberOfReservationsByPet(pet);
-
-				PetHotel petWithRoomForThisDate = petHotelDataAboutThisPet.stream()
-						.filter(phData -> this.petHotelService.checkPetHasRoomForThisDate(startDate,
-								finishDate, phData.getStartDate(), phData.getFinishDate()))
-						.findAny().orElse(null);
-
-
-				if (petWithRoomForThisDate != null) {
-					Date bookedStartDate = petWithRoomForThisDate.getStartDate();
-					Date bookedFinishedDate = petWithRoomForThisDate.getFinishDate();
-
-					// si hay al menos una reserva en las fechas elegidas, configuramos mensaje de
-					// error
-					if (numberOfHotelReservationsForThisPet.equals(1)) {
-						log.info("El Numero de reservas es igual a 1");
-						String mssg = String.format(
-								"Ya tienes una reserva desde %s hasta %s para tu mascota %s. ¡Elige otra fecha!",
-								conversionService.convert(bookedStartDate, String.class),
-								conversionService.convert(bookedFinishedDate, String.class), pet);
-						redirectAttributes.addFlashAttribute("message", mssg);
-
-					} else if (numberOfHotelReservationsForThisPet > 1) {
-						log.info("Hay más de 1 reserva");
-						String mssg = String.format(
-								"Hay algunas reservas para tu mascota %s que coinciden con las fechas elegidas. ¡Elige otra fecha!",
-								pet);
-						redirectAttributes.addFlashAttribute("message", mssg);
-					}
-					redirect = VIEWS_PETHOTEL_CREATE_REDIRECT;
-				}
-				// si no hay ninguna reserva en las fechas elegidas, reservamos el hotel.
-				else {
-					log.info(String.format("Este pet no tiene una reserva o más en el hotel: %s",
-							numberOfHotelReservationsForThisPet <= 1));
-					redirect = "redirect:/";
-					String message = String.format(
-							"Has reservado una habitacion para %s desde %s hasta %s. ¡Recibirás un correo de confirmación!",
-							pet, conversionService.convert(startDate, String.class),
-							conversionService.convert(finishDate, String.class));
-					redirectAttributes.addFlashAttribute("message", message);
-					pethotel.setFinishDate(finishDate);
-					pethotel.setStartDate(startDate);
-					pethotel.setPet(pet);
-					pethotel.setOwner(owner);
-					this.petHotelService.savePetHotel(pethotel);
-
-				}
-
-			}
-			// si no había ninguna reserva en la BD para la mascota elegida, reservamos directamente
-			else {
-				redirect = "redirect:/";
-				String message = String.format(
-						"Has reservado una habitacion para %s desde %s hasta %s. ¡Recibirás un correo de confirmación!",
-						pet, conversionService.convert(startDate, String.class),
-						conversionService.convert(finishDate, String.class));
-				redirectAttributes.addFlashAttribute("message", message);
-				pethotel.setFinishDate(finishDate);
-				pethotel.setStartDate(startDate);
-				pethotel.setPet(pet);
-				pethotel.setOwner(owner);
-				this.petHotelService.savePetHotel(pethotel);
-			}
-
+			redirect = "redirect:/";
+			var message = String.format(
+					"Has reservado una habitacion para %s desde %s hasta %s. ¡Recibirás un correo de confirmación!",
+					pet, conversionService.convert(startDate, String.class),
+					conversionService.convert(finishDate, String.class));
+			redirectAttributes.addFlashAttribute(MESSAGE, message);
+			pethotel.setFinishDate(finishDate);
+			pethotel.setStartDate(startDate);
+			pethotel.setPet(pet);
+			pethotel.setOwner(owner);
+			this.petHotelService.savePetHotel(pethotel);
 		}
 		return redirect;
 	}
