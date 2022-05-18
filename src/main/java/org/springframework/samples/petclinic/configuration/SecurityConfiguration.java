@@ -32,15 +32,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 		String owner = "owner";
 		String admin = "admin";
+		String basicClinicOwner = "basicClinicOwner";
+		String advancedClinicOwner = "advancedClinicOwner";
+		String ProClinicOwner = "ProClinicOwner";
 
-		http.authorizeRequests().antMatchers("/resources/**", "/webjars/**", "/h2-console/**")
-				.permitAll().antMatchers(HttpMethod.GET, "/", "/oups").permitAll()
-				.antMatchers("/pethotels/**").hasAnyAuthority(owner).antMatchers("/users/new")
-				.permitAll().antMatchers("/admin/**").hasAnyAuthority(admin)
-				.antMatchers("/owners/**").hasAnyAuthority(owner, admin).antMatchers("/vets/**")
-				.authenticated().antMatchers("/causes/**").authenticated()
-				.antMatchers("/adoption/**").hasAnyAuthority(owner).anyRequest().denyAll().and()
-				.formLogin()
+		http.authorizeRequests().antMatchers("/resources/**", "/webjars/**", "/h2-console/**").permitAll()
+				.antMatchers(HttpMethod.GET, "/", "/oups").permitAll().antMatchers("/pethotels/**")
+				.hasAnyAuthority(owner).antMatchers("/users/new").permitAll().antMatchers("/clinics/new").permitAll()
+				.antMatchers("/signup/**").permitAll().antMatchers("/admin/**").hasAnyAuthority(admin)
+				.antMatchers("/owners/**").hasAnyAuthority(owner, admin).antMatchers("/vets/**").authenticated()
+				.antMatchers("/causes/**").authenticated().antMatchers("/clinicowner/**")
+				.hasAnyAuthority(basicClinicOwner, advancedClinicOwner, ProClinicOwner).antMatchers("/adoption/**")
+				.hasAnyAuthority(owner).anyRequest().denyAll().and().formLogin()
 				/* .loginPage("/login") */
 				.failureUrl("/login-error").and().logout().logoutSuccessUrl("/");
 		// Configuración para que funcione la consola de administración
@@ -54,10 +57,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.jdbcAuthentication().dataSource(dataSource)
-				.usersByUsernameQuery(
-						"select username,password,enabled " + "from users " + "where username = ?")
-				.authoritiesByUsernameQuery(
-						"select username, authority " + "from authorities " + "where username = ?")
+				.usersByUsernameQuery("select username,password,enabled " + "from users " + "where username = ?")
+				.authoritiesByUsernameQuery("select username, authority " + "from authorities " + "where username = ?")
 				.passwordEncoder(passwordEncoder());
 	}
 
@@ -67,5 +68,3 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	}
 
 }
-
-

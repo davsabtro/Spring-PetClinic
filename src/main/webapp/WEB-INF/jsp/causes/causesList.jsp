@@ -9,6 +9,8 @@ uri="http://www.springframework.org/security/tags"%>
 
 <petclinic:layout pageName="causes">
 	<h2>Causas disponibles</h2>
+	
+	
 
 	<table id="causesTable" class="table table-striped">
 		<thead>
