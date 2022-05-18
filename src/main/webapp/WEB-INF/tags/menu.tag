@@ -89,6 +89,10 @@
 											
 													
 													<p class="text-left">
+													<a href="<c:url value="/users/changePassword" />"
+													class="btn btn-primary btn-block btn-sm">Cambiar contraseña</a>
+													
+													<p class="text-left">
 												<a href="<c:url value="/logout" />"
 													class="btn btn-primary btn-block btn-sm">Salir</a>
 													

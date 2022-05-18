@@ -39,8 +39,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.permitAll().antMatchers("/admin/**").hasAnyAuthority(admin)
 				.antMatchers("/owners/**").hasAnyAuthority(owner, admin).antMatchers("/vets/**")
 				.authenticated().antMatchers("/causes/**").authenticated()
-				.antMatchers("/adoption/**").hasAnyAuthority(owner).anyRequest().denyAll().and()
-				.formLogin()
+				.antMatchers("/adoption/**").hasAnyAuthority(owner)
+				.antMatchers("/users/changePassword").hasAuthority("owner").anyRequest().denyAll()
+				.and().formLogin()
+
+				// TODO cambiar de contraseñas ahora mismo está soportado sólo para owners. Puede
+				// que haya que modificar esto cuando haya roles distintos que puedan cambiar su
+				// contraseña (por ejemplo clínicas)
+
 				/* .loginPage("/login") */
 				.failureUrl("/login-error").and().logout().logoutSuccessUrl("/");
 		// Configuración para que funcione la consola de administración
