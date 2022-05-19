@@ -34,7 +34,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		String admin = "admin";
 		String basicClinicOwner = "basicClinicOwner";
 		String advancedClinicOwner = "advancedClinicOwner";
-		String ProClinicOwner = "ProClinicOwner";
+		String proClinicOwner = "proClinicOwner";
 
 		http.authorizeRequests().antMatchers("/resources/**", "/webjars/**", "/h2-console/**").permitAll()
 				.antMatchers(HttpMethod.GET, "/", "/oups").permitAll().antMatchers("/pethotels/**")
@@ -42,7 +42,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/signup/**").permitAll().antMatchers("/admin/**").hasAnyAuthority(admin)
 				.antMatchers("/owners/**").hasAnyAuthority(owner, admin).antMatchers("/vets/**").authenticated()
 				.antMatchers("/causes/**").authenticated().antMatchers("/clinicowner/**")
-				.hasAnyAuthority(basicClinicOwner, advancedClinicOwner, ProClinicOwner).antMatchers("/adoption/**")
+				.hasAnyAuthority(basicClinicOwner, advancedClinicOwner, proClinicOwner).antMatchers("/adoption/**")
 				.hasAnyAuthority(owner).anyRequest().denyAll().and().formLogin()
 				/* .loginPage("/login") */
 				.failureUrl("/login-error").and().logout().logoutSuccessUrl("/");
