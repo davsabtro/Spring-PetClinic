@@ -35,7 +35,7 @@
 					<span>Veterinarios</span>
 				</petclinic:menuItem>
 
-				<sec:authorize access="hasAnyAuthority('basicClinicOwner', 'owner')">
+				<sec:authorize access="hasAnyAuthority('basicClinicOwner', 'advancedClinicOwner', 'owner')">
 					<petclinic:menuItem active="${name eq 'causes'}" url="/causes"
 						title="causes">
 						<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
