@@ -32,15 +32,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 		String owner = "owner";
 		String admin = "admin";
+		String basicCO = "basicClinicOwner";
+		String advancedCO = "advancedClinicOwner";
+		String proCO = "proClinicOwner";
 
 		http.authorizeRequests().antMatchers("/resources/**", "/webjars/**", "/h2-console/**")
-				.permitAll().antMatchers(HttpMethod.GET, "/", "/oups").permitAll()
-				.antMatchers("/pethotels/**").hasAnyAuthority(owner).antMatchers("/users/new")
-				.permitAll().antMatchers("/admin/**").hasAnyAuthority(admin)
-				.antMatchers("/owners/**").hasAnyAuthority(owner, admin).antMatchers("/vets/**")
-				.authenticated().antMatchers("/causes/**").authenticated()
-				.antMatchers("/adoption/**").hasAnyAuthority(owner)
-				.antMatchers("/users/changePassword").hasAuthority("owner").anyRequest().denyAll()
+				.permitAll() //
+				.antMatchers(HttpMethod.GET, "/", "/oups").permitAll() //
+				.antMatchers("/pethotels/**").hasAnyAuthority(owner) //
+				.antMatchers("/users/new").permitAll() //
+				.antMatchers("/clinics/new").permitAll() //
+				.antMatchers("/admin/**").hasAnyAuthority(admin) //
+				.antMatchers("/owners/**").hasAnyAuthority(owner, admin) //
+				.antMatchers("/vets/**").authenticated() //
+				.antMatchers("/causes/**").authenticated() //
+				.antMatchers("/clinicowner/**").hasAnyAuthority(basicCO, advancedCO, proCO) //
+				.antMatchers("/adoption/**").hasAnyAuthority(owner) //
+				.antMatchers("/users/changePassword").hasAuthority("owner") //
+				.anyRequest().denyAll() //
 				.and().formLogin()
 
 				// TODO cambiar de contraseñas ahora mismo está soportado sólo para owners. Puede
@@ -73,5 +82,3 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	}
 
 }
-
-

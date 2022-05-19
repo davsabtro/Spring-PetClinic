@@ -58,14 +58,32 @@
 					<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
 					<span>Adoptar</span>
 				</petclinic:menuItem>
+				
+				<sec:authorize access="hasAnyAuthority('basicClinicOwner','advancedClinicOwner','proClinicOwner') and isAuthenticated()">
+				<petclinic:menuItem active="${name eq 'premium'}" url="/clinicowner/premium"
+					title="hotel">
+					<span class="glyphicon glyphicon-euro" aria-hidden="true"></span>
+					<span>Premium</span>
+				</petclinic:menuItem>
+			</sec:authorize>
 
 			</ul>
-
-
+			
 			<ul class="nav navbar-nav navbar-right">
 				<sec:authorize access="!isAuthenticated()">
-					<li><a href="<c:url value="/login" />">Entrar</a></li>
-					<li><a href="<c:url value="/users/new" />">Registro</a></li>
+					<li><a href="<c:url value="/login" />"><strong>Entrar</strong></a></li>
+				<!--  	<li><a href="<c:url value="/users/new" />">Registro</a></li> -->
+				
+				<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown">
+							<strong>Registro</strong> <span
+							class="glyphicon glyphicon-chevron-down"></span>
+					</a>
+						<ul class="dropdown-menu">
+							
+				<li><a href="<c:url value="/clinics/new"/>">Clinica</a></li>
+				<li><a href="<c:url value="/users/new"/>">Dueño</a></li>
+				</ul>
 				</sec:authorize>
 				<sec:authorize access="isAuthenticated()">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
@@ -99,7 +117,7 @@
 													<p class="text-left">
 											</p>
 											
-											</p>
+											
 										</div>
 									</div>
 								</div>
