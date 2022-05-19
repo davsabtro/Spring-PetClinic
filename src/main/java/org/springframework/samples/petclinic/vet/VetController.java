@@ -27,6 +27,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.samples.petclinic.user.UserService;
+import org.springframework.samples.petclinic.clinicowner.ClinicOwner;
+import org.springframework.samples.petclinic.clinicowner.ClinicOwnerService;
+import java.util.Objects;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * @author Juergen Hoeller
@@ -40,9 +45,13 @@ public class VetController {
 	private static final String VIEWS_VET_CREATE_OR_UPDATE_FORM = "vets/createOrUpdateVetForm";
 
 	private final VetService vetService;
+	private final UserService userService;
+	private final ClinicOwnerService clinicOwnerService;
 
 	@Autowired
-	public VetController(VetService clinicService) {
+	public VetController(VetService clinicService, UserService userService, ClinicOwnerService clinicOwnerService) {
+		this.userService = userService;
+		this.clinicOwnerService = clinicOwnerService;
 		this.vetService = clinicService;
 	}
 
@@ -99,7 +108,19 @@ public class VetController {
 	}
 
 	@PostMapping(value = "/vets/new")
-	public String processCreationForm(@Valid Vet vet, BindingResult result, ModelMap model) {
+	public String processCreationForm(@Valid Vet vet, BindingResult result, ModelMap model,
+		RedirectAttributes redirectAttributes) {
+
+		String userName = userService.getCurrentUserName();
+		ClinicOwner clinicOwner = clinicOwnerService.findClinicOwnerByUserName(userName);
+
+		if(!Objects.isNull(clinicOwner)){
+			if(clinicOwner.getPlan().toString() == "BASIC"){
+				redirectAttributes.addFlashAttribute("message", "No puedes añadir información de veterinarios");
+				return "redirect:/vets/";
+			}
+		}
+
 		if (result.hasErrors()) {
 			model.put("vet", vet);
 			return VIEWS_VET_CREATE_OR_UPDATE_FORM;
