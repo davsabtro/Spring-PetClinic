@@ -32,18 +32,30 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 		String owner = "owner";
 		String admin = "admin";
-		String basicClinicOwner = "basicClinicOwner";
-		String advancedClinicOwner = "advancedClinicOwner";
-		String proClinicOwner = "proClinicOwner";
+		String basicCO = "basicClinicOwner";
+		String advancedCO = "advancedClinicOwner";
+		String proCO = "proClinicOwner";
 
-		http.authorizeRequests().antMatchers("/resources/**", "/webjars/**", "/h2-console/**").permitAll()
-				.antMatchers(HttpMethod.GET, "/", "/oups").permitAll().antMatchers("/pethotels/**")
-				.hasAnyAuthority(owner).antMatchers("/users/new").permitAll().antMatchers("/clinics/new").permitAll()
-				.antMatchers("/signup/**").permitAll().antMatchers("/admin/**").hasAnyAuthority(admin)
-				.antMatchers("/owners/**").hasAnyAuthority(owner, admin).antMatchers("/vets/**").authenticated()
-				.antMatchers("/causes/**").authenticated().antMatchers("/clinicowner/**")
-				.hasAnyAuthority(basicClinicOwner, advancedClinicOwner, proClinicOwner).antMatchers("/adoption/**")
-				.hasAnyAuthority(owner).anyRequest().denyAll().and().formLogin()
+		http.authorizeRequests().antMatchers("/resources/**", "/webjars/**", "/h2-console/**")
+				.permitAll() //
+				.antMatchers(HttpMethod.GET, "/", "/oups").permitAll() //
+				.antMatchers("/pethotels/**").hasAnyAuthority(owner) //
+				.antMatchers("/users/new").permitAll() //
+				.antMatchers("/clinics/new").permitAll() //
+				.antMatchers("/admin/**").hasAnyAuthority(admin) //
+				.antMatchers("/owners/**").hasAnyAuthority(owner, admin) //
+				.antMatchers("/vets/**").authenticated() //
+				.antMatchers("/causes/**").authenticated() //
+				.antMatchers("/clinicowner/**").hasAnyAuthority(basicCO, advancedCO, proCO) //
+				.antMatchers("/adoption/**").hasAnyAuthority(owner) //
+				.antMatchers("/users/changePassword").hasAuthority("owner") //
+				.anyRequest().denyAll() //
+				.and().formLogin()
+
+				// TODO cambiar de contraseñas ahora mismo está soportado sólo para owners. Puede
+				// que haya que modificar esto cuando haya roles distintos que puedan cambiar su
+				// contraseña (por ejemplo clínicas)
+
 				/* .loginPage("/login") */
 				.failureUrl("/login-error").and().logout().logoutSuccessUrl("/");
 		// Configuración para que funcione la consola de administración
@@ -57,8 +69,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.jdbcAuthentication().dataSource(dataSource)
-				.usersByUsernameQuery("select username,password,enabled " + "from users " + "where username = ?")
-				.authoritiesByUsernameQuery("select username, authority " + "from authorities " + "where username = ?")
+				.usersByUsernameQuery(
+						"select username,password,enabled " + "from users " + "where username = ?")
+				.authoritiesByUsernameQuery(
+						"select username, authority " + "from authorities " + "where username = ?")
 				.passwordEncoder(passwordEncoder());
 	}
 
