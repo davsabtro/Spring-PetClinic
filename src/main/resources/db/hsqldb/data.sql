@@ -24,7 +24,7 @@ INSERT INTO vets(id, first_name,last_name) VALUES (6, 'Sharon', 'Jenkins');
 INSERT INTO users(username,password,enabled) VALUES ('clinicowner1','clinicowner1',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (7,'clinicowner1','basicClinicOwner');
 
-INSERT INTO clinic_owner(id,clinic_name,cif,address,city,telephone, username, plan) VALUES (1, 'Pet clinic', 'M99331229', 'Av. Reina Mercedes s/n', 'Sevilla', '1234567890', 'clinicowner1', 'BASIC');
+INSERT INTO clinic_owner(id,clinic_name,email,cif,address,city,telephone, username, plan) VALUES (1, 'Pet clinic','artemio4394@gmail.com','M99331229', 'Av. Reina Mercedes s/n', 'Sevilla', '1234567890', 'clinicowner1', 'BASIC');
 
 INSERT INTO specialties VALUES (1, 'radiology');
 INSERT INTO specialties VALUES (2, 'surgery');

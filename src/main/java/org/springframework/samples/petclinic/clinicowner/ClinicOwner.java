@@ -29,6 +29,10 @@ public class ClinicOwner extends BaseEntity {
 	@NotEmpty
 	private String clinicName;
 	
+	@NotEmpty
+	@Column(name = "email")
+	private String email;
+	
 	@Column(name = "cif")
 	@NotEmpty
 	@Pattern(regexp = "^([ABCDEFGHJKLMNPQRSUVW])(\\d{7})([0-9A-J])$") //A12345678 ó A1234567B
@@ -60,6 +64,14 @@ public class ClinicOwner extends BaseEntity {
 
 	public void setClinicName(String clinicName) {
 		this.clinicName = clinicName;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getCif() {
@@ -109,7 +121,10 @@ public class ClinicOwner extends BaseEntity {
 	public void setPlan(PlanType plan) {
 		this.plan = plan;
 	}
+
 	
 	
+
+
 	
 }

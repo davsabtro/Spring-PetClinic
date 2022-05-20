@@ -11,5 +11,7 @@ public interface ClinicOwnerRepository extends CrudRepository<ClinicOwner, Integ
 
 	@Query("SELECT c FROM ClinicOwner c WHERE c.user.username = ?1")
 	ClinicOwner findClinicOwnerByUserName(String username) throws DataAccessException;
+	
+	
 
 }
