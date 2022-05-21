@@ -183,11 +183,6 @@
             <artifactId>bootstrap</artifactId>
             <version>${webjars-bootstrap.version}</version>
         </dependency>
-        <dependency>
-			<groupId>com.squareup.okhttp</groupId>
-			<artifactId>okhttp</artifactId>
-			<version>2.2.0</version>
-		</dependency>
 		<dependency>
   			<groupId>com.sendgrid</groupId>
   			<artifactId>sendgrid-java</artifactId>
