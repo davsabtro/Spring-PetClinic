@@ -43,6 +43,7 @@
 		id="add-owner-form">
 		<div class="form-group has-feedback">
 			<petclinic:inputField label="Nombre" name="clinicName" />
+			<petclinic:inputField label="Email" name="email" />
 			<petclinic:inputField label="CIF/NIF" name="cif" />
 			<petclinic:inputField label="Direccion" name="address" />
 			<petclinic:inputField label="Ciudad" name="city" />
