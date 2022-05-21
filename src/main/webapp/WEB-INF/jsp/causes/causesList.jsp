@@ -73,7 +73,7 @@ uri="http://www.springframework.org/security/tags"%>
 		</tbody>
 	</table>
 
-	<sec:authorize access="hasAnyAuthority('owner', 'advancedClinicOwner', 'admin')">
+	<sec:authorize access="hasAnyAuthority('owner', 'advancedClinicOwner', 'proClinicOwner', 'admin')">
 		<spring:url value="/causes/new" var="addUrl"> </spring:url>
 		<a href="${fn:escapeXml(addUrl)}" class="btn btn-default">Crear causa</a>
 	</sec:authorize>

@@ -35,7 +35,7 @@
 					<span>Veterinarios</span>
 				</petclinic:menuItem>
 
-				<sec:authorize access="hasAnyAuthority('basicClinicOwner', 'advancedClinicOwner', 'owner')">
+				<sec:authorize access="isAuthenticated()">
 					<petclinic:menuItem active="${name eq 'causes'}" url="/causes"
 						title="causes">
 						<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
@@ -113,11 +113,11 @@
 												<strong><sec:authentication property="name" /></strong>
 											</p>
 											
-													
-													<p class="text-left">
-													<a href="<c:url value="/users/changePassword" />"
-													class="btn btn-primary btn-block btn-sm">Cambiar contraseña</a>
-													
+													<sec:authorize access="hasAnyAuthority('proClinicOwner')">
+														<p class="text-left">
+														<a href="<c:url value="/users/changePassword" />"
+														class="btn btn-primary btn-block btn-sm">Cambiar contraseña</a>
+													</sec:authorize>
 													<p class="text-left">
 												<a href="<c:url value="/logout" />"
 													class="btn btn-primary btn-block btn-sm">Salir</a>

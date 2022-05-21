@@ -50,17 +50,20 @@ public class ClinicOwnerController {
 			this.clinicOwnerService.saveClinicOwner(currentClinicOwner, "basicClinicOwner");
 			redirectAttributes.addFlashAttribute("message", "Tu cuenta ha pasado a plan " + plan.charAt(0)
 					+ plan.toLowerCase().substring(1, plan.length())
-					+ ". Esto significa que ya no puedes disfrutar de todas las ventajas de PetClinic Premium. Esperemos no sea por mucho tiempo ;)");
+					+ ". Esto significa que ya no puedes disfrutar de todas las ventajas de PetClinic Premium. Esperemos no sea por mucho tiempo ;)"
+					+ " ¡Recuerda que para visualizar tus funcionalidades debes volver a iniciar sesión!");
 
 		} else if (plan.equals(PlanType.ADVANCED.toString())) {
 			this.clinicOwnerService.saveClinicOwner(currentClinicOwner, "advancedClinicOwner");
 			redirectAttributes.addFlashAttribute("message", "¡Buena opción! Ya puedes disfrutar de las ventajas de "
-					+ plan.charAt(0) + plan.toLowerCase().substring(1, plan.length()) + " en Petclinic");
+					+ plan.charAt(0) + plan.toLowerCase().substring(1, plan.length()) + " en Petclinic."
+					+ " ¡Recuerda que para visualizar tus funcionalidades debes volver a iniciar sesión!");
 		} else if (plan.equals(PlanType.PRO.toString())) {
 			this.clinicOwnerService.saveClinicOwner(currentClinicOwner, "proClinicOwner");
 			redirectAttributes.addFlashAttribute("message",
 					"¡Genial! Ya eres " + plan.charAt(0) + plan.toLowerCase().substring(1, plan.length())
-							+ " en Petclinic. ¡Puedes disfrutar de todos los servicios!");
+							+ " en Petclinic. ¡Puedes disfrutar de todos los servicios!"
+							+ " ¡Recuerda que para visualizar tus funcionalidades debes volver a iniciar sesión!");
 		}
 
 		return "redirect:/";
