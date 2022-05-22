@@ -43,13 +43,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/users/new").permitAll() //
 				.antMatchers("/clinics/new").permitAll() //
 				.antMatchers("/admin/**").hasAnyAuthority(admin) //
-				.antMatchers("/owners/find").authenticated().antMatchers("/owners**").authenticated()
-				.antMatchers("/owners/**").hasAnyAuthority(owner, admin)
-				.antMatchers("/vets**").authenticated().antMatchers("/vets/**").hasAnyAuthority(owner, admin)
+				.antMatchers("/owners**").authenticated() //
+				.antMatchers("/vets**").authenticated() //
 				.antMatchers("/causes/**").authenticated() //
 				.antMatchers("/changelog").authenticated()
 				.antMatchers("/clinicowner/**").hasAnyAuthority(basicCO, advancedCO, proCO) //
 				.antMatchers("/adoption/**").hasAnyAuthority(owner) //
+				.antMatchers("/customeragreement/**").permitAll() //
 				.antMatchers("/users/changePassword").hasAuthority(proCO) //
 				.anyRequest().denyAll() //
 				.and().formLogin()

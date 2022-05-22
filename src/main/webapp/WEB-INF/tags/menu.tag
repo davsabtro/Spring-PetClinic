@@ -68,12 +68,13 @@
 				</sec:authorize>
 				
 				<sec:authorize access="hasAnyAuthority('basicClinicOwner','advancedClinicOwner','proClinicOwner') and isAuthenticated()">
-				<petclinic:menuItem active="${name eq 'premium'}" url="/clinicowner/premium"
-					title="hotel">
-					<span class="glyphicon glyphicon-euro" aria-hidden="true"></span>
-					<span>Premium</span>
-				</petclinic:menuItem>
-			</sec:authorize>
+					<petclinic:menuItem active="${name eq 'premium'}" url="/clinicowner/premium"
+						title="hotel">
+						<span class="glyphicon glyphicon-euro" aria-hidden="true"></span>
+						<span>Premium</span>
+					</petclinic:menuItem>
+				</sec:authorize>
+
 
 				<petclinic:menuItem active="${name eq 'changelog'}" url="/changelog"
 					title="changelog">
@@ -81,8 +82,41 @@
 					<span>Changelog</span>
 				</petclinic:menuItem>
 
+
+				<sec:authorize access="!isAuthenticated()">
+					<petclinic:menuItem active="${name eq 'customeragreementsAll'}" url="/customeragreement/showAll"
+						title="customeragreementsall">
+						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+						<span>Acuerdos de cliente</span>
+					</petclinic:menuItem>
+				</sec:authorize>
+
+				<sec:authorize access="hasAuthority('basicClinicOwner') and isAuthenticated()">
+					<petclinic:menuItem active="${name eq 'customeragreementBasic'}" url="/customeragreement/showBasic"
+						title="customeragreementbasic">
+						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+						<span>Mi acuerdo de cliente</span>
+					</petclinic:menuItem>
+				</sec:authorize>
+
+				<sec:authorize access="hasAuthority('advancedClinicOwner') and isAuthenticated()">
+					<petclinic:menuItem active="${name eq 'customeragreementAdvanced'}" url="/customeragreement/showAdvanced"
+						title="customeragreementadvanced">
+						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+						<span>Mi acuerdo de cliente</span>
+					</petclinic:menuItem>
+				</sec:authorize>
+				
+				<sec:authorize access="hasAuthority('proClinicOwner') and isAuthenticated()">
+					<petclinic:menuItem active="${name eq 'customeragreementPro'}" url="/customeragreement/showPro"
+						title="customeragreementpro">
+						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+						<span>Mi acuerdo de cliente</span>
+					</petclinic:menuItem>
+				</sec:authorize>
+
 			</ul>
-			
+
 			<ul class="nav navbar-nav navbar-right">
 				<sec:authorize access="!isAuthenticated()">
 					<li><a href="<c:url value="/login" />"><strong>Entrar</strong></a></li>
