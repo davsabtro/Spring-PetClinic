@@ -52,8 +52,9 @@
 
     <spring:url value="/vets/new" var="addUrl">
     </spring:url>
-    <a href="${fn:escapeXml(addUrl)}" class="btn btn-default">Añadir Veterinario</a>
-
+    <sec:authorize access="hasAnyAuthority('admin')">
+        <a href="${fn:escapeXml(addUrl)}" class="btn btn-default">Añadir Veterinario</a>
+    </sec:authorize>
     <table class="table-buttons">
         <tr>
             <td>
