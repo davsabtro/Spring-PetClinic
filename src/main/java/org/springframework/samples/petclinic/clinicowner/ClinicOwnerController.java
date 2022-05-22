@@ -37,40 +37,44 @@ public class ClinicOwnerController {
 	@GetMapping(value = "/premium")
 	public String premiumSelectForm(Map<String, Object> model) {
 		String currentUserName = this.userService.getCurrentUserName();
-		ClinicOwner currentClinicOwner = this.clinicOwnerService.findClinicOwnerByUserName(currentUserName);
+		ClinicOwner currentClinicOwner =
+				this.clinicOwnerService.findClinicOwnerByUserName(currentUserName);
 		model.put("currentClinicOwner", currentClinicOwner);
 		return VIEWS_CLINICOWNER_PREMIUM_PRICES;
 	}
 
 	@GetMapping(value = "changePlan/{plan}")
-	public String listSuitors(@PathVariable("plan") String plan, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+	public String listSuitors(@PathVariable("plan") String plan,
+			RedirectAttributes redirectAttributes, HttpServletRequest request) {
 		String currentUserName = this.userService.getCurrentUserName();
-		ClinicOwner currentClinicOwner = this.clinicOwnerService.findClinicOwnerByUserName(currentUserName);
+		ClinicOwner currentClinicOwner =
+				this.clinicOwnerService.findClinicOwnerByUserName(currentUserName);
 		currentClinicOwner.setPlan(PlanType.valueOf(plan));
 
 		if (plan.equals(PlanType.BASIC.toString())) {
 			this.clinicOwnerService.saveClinicOwner(currentClinicOwner, "basicClinicOwner");
-			redirectAttributes.addFlashAttribute("message", "Tu cuenta ha pasado a plan " + plan.charAt(0)
-					+ plan.toLowerCase().substring(1, plan.length())
+			redirectAttributes.addFlashAttribute("message", "Tu cuenta ha pasado a plan "
+					+ plan.charAt(0) + plan.toLowerCase().substring(1, plan.length())
 					+ ". Esto significa que ya no puedes disfrutar de todas las ventajas de PetClinic Premium. Esperemos no sea por mucho tiempo ;)"
 					+ " ¡Recuerda que para visualizar tus funcionalidades debes volver a iniciar sesión!");
 
 		} else if (plan.equals(PlanType.ADVANCED.toString())) {
 			this.clinicOwnerService.saveClinicOwner(currentClinicOwner, "advancedClinicOwner");
-			redirectAttributes.addFlashAttribute("message", "¡Buena opción! Ya puedes disfrutar de las ventajas de "
-					+ plan.charAt(0) + plan.toLowerCase().substring(1, plan.length()) + " en Petclinic."
-					+ " ¡Recuerda que para visualizar tus funcionalidades debes volver a iniciar sesión!");
+			redirectAttributes.addFlashAttribute("message",
+					"¡Buena opción! Ya puedes disfrutar de las ventajas de " + plan.charAt(0)
+							+ plan.toLowerCase().substring(1, plan.length()) + " en Petclinic."
+							+ " ¡Recuerda que para visualizar tus funcionalidades debes volver a iniciar sesión!");
 		} else if (plan.equals(PlanType.PRO.toString())) {
 			this.clinicOwnerService.saveClinicOwner(currentClinicOwner, "proClinicOwner");
-			redirectAttributes.addFlashAttribute("message",
-					"¡Genial! Ya eres " + plan.charAt(0) + plan.toLowerCase().substring(1, plan.length())
-							+ " en Petclinic. ¡Puedes disfrutar de todos los servicios!"
-							+ " ¡Recuerda que para visualizar tus funcionalidades debes volver a iniciar sesión!");
+			redirectAttributes.addFlashAttribute("message", "¡Genial! Ya eres " + plan.charAt(0)
+					+ plan.toLowerCase().substring(1, plan.length())
+					+ " en Petclinic. ¡Puedes disfrutar de todos los servicios!"
+					+ " ¡Recuerda que para visualizar tus funcionalidades debes volver a iniciar sesión!");
 		}
 
-		try{
+		try {
 			request.logout();
-		} catch (ServletException e){
+		} catch (ServletException e) {
 		}
 
 		return "redirect:/";

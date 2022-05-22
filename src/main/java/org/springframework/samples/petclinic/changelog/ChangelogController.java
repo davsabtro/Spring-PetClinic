@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class ChangelogController {
 
-    @GetMapping({"/changelog"})
-	  public String welcome(Map<String, Object> model) {	    
+	@GetMapping({"/changelog"})
+	public String welcome(Map<String, Object> model) {
 
-	    return "changelog/changelog";
-	  }
+		return "changelog/changelog";
+	}
 }

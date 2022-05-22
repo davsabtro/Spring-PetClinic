@@ -110,6 +110,8 @@ display: block;
     <li><FONT SIZE=3> Visitas al mes ilimitadas <img id="gif" src="/resources/images/red-mark-cross-removebg-preview.png" width="50px"></font></li>
     <li><FONT SIZE=3> Pet Hotel <img id="gif" src="/resources/images/red-mark-cross-removebg-preview.png" width="50px"></font></li>
     <li><FONT SIZE=3> Soporte propietarios <img id="gif" src="/resources/images/red-mark-cross-removebg-preview.png" width="50px"></font></li>
+    <li><FONT SIZE=3> Generación de contraseñas seguras <img id="gif" src="/resources/images/red-mark-cross-removebg-preview.png" width="50px"></font></li>
+    <li><FONT SIZE=3> Notificaciones de inicio de sesión <img id="gif" src="/resources/images/red-mark-cross-removebg-preview.png" width="50px"></font></li>
  
      <c:choose>
     <c:when test = "${plan eq 'BASIC' }">
@@ -157,6 +159,8 @@ display: block;
     <li><FONT SIZE=3> Visitas al mes ilimitadas <img id="gif" src="/resources/images/red-mark-cross-removebg-preview.png" width="50px"></font></li>
     <li><FONT SIZE=3> Pet Hotel <img id="gif" src="/resources/images/red-mark-cross-removebg-preview.png" width="50px"></font></li>
     <li><FONT SIZE=3> Soporte propietarios <img id="gif" src="/resources/images/red-mark-cross-removebg-preview.png" width="50px"></font></li>
+    <li><FONT SIZE=3> Generación de contraseñas seguras <img id="gif" src="/resources/images/red-mark-cross-removebg-preview.png" width="50px"></font></li>
+    <li><FONT SIZE=3> Notificaciones de inicio de sesión <img id="gif" src="/resources/images/red-mark-cross-removebg-preview.png" width="50px"></font></li>
     <c:choose>
          
          <c:when test = "${plan eq 'ADVANCED' }">
@@ -198,6 +202,8 @@ display: block;
     <li><FONT SIZE=3> Visitas al mes ilimitadas <img id="gif" src="/resources/images/check-mark-removebg-preview.png" width="50px"></font></li>
     <li><FONT SIZE=3> Pet Hotel <img id="gif" src="/resources/images/check-mark-removebg-preview.png" width="50px"></font></li>
     <li><FONT SIZE=3> Soporte propietarios <img id="gif" src="/resources/images/check-mark-removebg-preview.png" width="50px"></font></li>
+    <li><FONT SIZE=3> Generación de contraseñas seguras <img id="gif" src="/resources/images/check-mark-removebg-preview.png" width="50px"></font></li>
+    <li><FONT SIZE=3> Notificaciones de inicio de sesión <img id="gif" src="/resources/images/check-mark-removebg-preview.png" width="50px"></font></li>
    
 	<c:choose>
     <c:when test = "${plan eq 'PRO' }">
