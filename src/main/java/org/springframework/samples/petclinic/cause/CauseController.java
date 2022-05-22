@@ -15,9 +15,13 @@ package org.springframework.samples.petclinic.cause;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Objects;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.clinicowner.ClinicOwner;
+import org.springframework.samples.petclinic.clinicowner.ClinicOwnerService;
 import org.springframework.samples.petclinic.donation.Donation;
+import org.springframework.samples.petclinic.user.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -46,10 +50,15 @@ public class CauseController {
 	private static final String VIEWS_CAUSES_CREATE_REDIRECT = "redirect:/causes/new";
 
 	private final CauseService causeService;
+	private final UserService userService;
+	private final ClinicOwnerService clinicOwnerService;
 
 	@Autowired
-	public CauseController(CauseService causeService) {
+	public CauseController(CauseService causeService, UserService userService,
+			ClinicOwnerService clinicOwnerService) {
 		this.causeService = causeService;
+		this.userService = userService;
+		this.clinicOwnerService = clinicOwnerService;
 	}
 
 	@InitBinder
@@ -72,6 +81,17 @@ public class CauseController {
 	@PostMapping(value = "/causes/new")
 	public String processCreationForm(@Valid Cause cause, BindingResult result, ModelMap model,
 			RedirectAttributes redirectAttributes) {
+
+
+		String userName = userService.getCurrentUserName();
+		ClinicOwner clinicOwner = clinicOwnerService.findClinicOwnerByUserName(userName);
+
+		if (!Objects.isNull(clinicOwner) && clinicOwner.getPlan().toString().equals("BASIC")) {
+			redirectAttributes.addFlashAttribute("message",
+					"No puedes crear causas con el plan Basic");
+			return "redirect:/causes/";
+		}
+
 		if (cause.getName().isEmpty() || cause.getDescription().isEmpty()
 				|| cause.getOrganization().isEmpty()) {
 			redirectAttributes.addFlashAttribute("message", "Todos los campos son obligatorios");

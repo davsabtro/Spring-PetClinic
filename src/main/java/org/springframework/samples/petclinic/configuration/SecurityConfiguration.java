@@ -32,15 +32,29 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 		String owner = "owner";
 		String admin = "admin";
+		String basicCO = "basicClinicOwner";
+		String advancedCO = "advancedClinicOwner";
+		String proCO = "proClinicOwner";
 
 		http.authorizeRequests().antMatchers("/resources/**", "/webjars/**", "/h2-console/**")
-				.permitAll().antMatchers(HttpMethod.GET, "/", "/oups").permitAll()
-				.antMatchers("/pethotels/**").hasAnyAuthority(owner).antMatchers("/users/new")
-				.permitAll().antMatchers("/admin/**").hasAnyAuthority(admin)
-				.antMatchers("/owners/**").hasAnyAuthority(owner, admin).antMatchers("/vets/**")
-				.authenticated().antMatchers("/causes/**").authenticated()
-				.antMatchers("/adoption/**").hasAnyAuthority(owner).anyRequest().denyAll().and()
-				.formLogin()
+				.permitAll() //
+				.antMatchers(HttpMethod.GET, "/", "/oups").permitAll() //
+				.antMatchers("/pethotels/**").hasAnyAuthority(owner) //
+				.antMatchers("/users/new").permitAll() //
+				.antMatchers("/clinics/new").permitAll() //
+				.antMatchers("/admin/**").hasAnyAuthority(admin) //
+				.antMatchers("/owners/**").authenticated() //
+				.antMatchers("/vets/**").authenticated() //
+				.antMatchers("/causes/**").authenticated() //
+				.antMatchers("/changelog").authenticated() //
+				.antMatchers("/clinicowner/**").hasAnyAuthority(basicCO, advancedCO, proCO) //
+				.antMatchers("/adoption/**").hasAnyAuthority(owner) //
+				.antMatchers("/supportpage/**").permitAll() //
+				.antMatchers("/customeragreement/**").permitAll() //
+				.antMatchers("/users/changePassword").hasAuthority(proCO) //
+				.anyRequest().denyAll() //
+				.and().formLogin()
+
 				/* .loginPage("/login") */
 				.failureUrl("/login-error").and().logout().logoutSuccessUrl("/");
 		// Configuración para que funcione la consola de administración
@@ -66,6 +80,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		return NoOpPasswordEncoder.getInstance();
 	}
 
-}
 
+}
 

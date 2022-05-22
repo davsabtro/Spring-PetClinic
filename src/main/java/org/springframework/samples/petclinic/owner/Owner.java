@@ -1,17 +1,15 @@
 /*
  * Copyright 2002-2013 the original author or authors.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 package org.springframework.samples.petclinic.owner;
 
@@ -65,13 +63,13 @@ public class Owner extends Person {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
 	private Set<Pet> pets;
-	
+
 	//
 	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "username", referencedColumnName = "username")
+	@JoinColumn(name = "username", referencedColumnName = "username")
 	private User user;
 	//
-	
+
 	public String getAddress() {
 		return this.address;
 	}
@@ -125,26 +123,27 @@ public class Owner extends Person {
 		getPetsInternal().add(pet);
 		pet.setOwner(this);
 	}
-	
+
 	public boolean removePet(Pet pet) {
 		return getPetsInternal().remove(pet);
 	}
 
 	/**
 	 * Return the Pet with the given name, or null if none found for this Owner.
+	 * 
 	 * @param name to test
 	 * @return true if pet name is already in use
 	 */
 	public Pet getPet(String name) {
 		return getPet(name, false);
 	}
-	
-	public Pet getPetwithIdDifferent(String name,Integer id) {
+
+	public Pet getPetwithIdDifferent(String name, Integer id) {
 		name = name.toLowerCase();
 		for (Pet pet : getPetsInternal()) {
 			String compName = pet.getName();
 			compName = compName.toLowerCase();
-			if (compName.equals(name) && pet.getId()!=id) {
+			if (compName.equals(name) && pet.getId() != id) {
 				return pet;
 			}
 		}
@@ -153,6 +152,7 @@ public class Owner extends Person {
 
 	/**
 	 * Return the Pet with the given name, or null if none found for this Owner.
+	 * 
 	 * @param name to test
 	 * @return true if pet name is already in use
 	 */
@@ -174,8 +174,9 @@ public class Owner extends Person {
 	public String toString() {
 		return new ToStringCreator(this)
 
-				.append("id", this.getId()).append("new", this.isNew()).append("lastName", this.getLastName())
-				.append("firstName", this.getFirstName()).append("address", this.address).append("city", this.city)
+				.append("id", this.getId()).append("new", this.isNew())
+				.append("lastName", this.getLastName()).append("firstName", this.getFirstName())
+				.append("address", this.address).append("city", this.city)
 				.append("telephone", this.telephone).toString();
 	}
 
