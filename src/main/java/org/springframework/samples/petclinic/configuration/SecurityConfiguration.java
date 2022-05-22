@@ -49,6 +49,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/clinicowner/**").hasAnyAuthority(basicCO, advancedCO, proCO) //
 				.antMatchers("/adoption/**").hasAnyAuthority(owner) //
 				.antMatchers("/users/changePassword").hasAuthority("owner") //
+				.antMatchers("/customeragreement/**").permitAll() //
 				.anyRequest().denyAll() //
 				.and().formLogin()
 

@@ -60,13 +60,18 @@
 				</petclinic:menuItem>
 				
 				<sec:authorize access="hasAnyAuthority('basicClinicOwner','advancedClinicOwner','proClinicOwner') and isAuthenticated()">
-				<petclinic:menuItem active="${name eq 'premium'}" url="/clinicowner/premium"
-					title="hotel">
-					<span class="glyphicon glyphicon-euro" aria-hidden="true"></span>
-					<span>Premium</span>
-				</petclinic:menuItem>
-			</sec:authorize>
+					<petclinic:menuItem active="${name eq 'premium'}" url="/clinicowner/premium"
+						title="hotel">
+						<span class="glyphicon glyphicon-euro" aria-hidden="true"></span>
+						<span>Premium</span>
+					</petclinic:menuItem>
+				</sec:authorize>
 
+				<petclinic:menuItem active="${name eq 'customeragreement'}" url="/customeragreement/show"
+					title="customeragreement">
+					<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+					<span>Acuerdo de cliente</span>
+				</petclinic:menuItem>
 			</ul>
 			
 			<ul class="nav navbar-nav navbar-right">
