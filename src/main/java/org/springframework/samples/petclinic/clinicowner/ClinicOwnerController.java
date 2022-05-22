@@ -2,6 +2,8 @@ package org.springframework.samples.petclinic.clinicowner;
 
 import java.util.Map;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.user.UserService;
@@ -41,7 +43,7 @@ public class ClinicOwnerController {
 	}
 
 	@GetMapping(value = "changePlan/{plan}")
-	public String listSuitors(@PathVariable("plan") String plan, RedirectAttributes redirectAttributes) {
+	public String listSuitors(@PathVariable("plan") String plan, RedirectAttributes redirectAttributes, HttpServletRequest request) {
 		String currentUserName = this.userService.getCurrentUserName();
 		ClinicOwner currentClinicOwner = this.clinicOwnerService.findClinicOwnerByUserName(currentUserName);
 		currentClinicOwner.setPlan(PlanType.valueOf(plan));
@@ -50,17 +52,25 @@ public class ClinicOwnerController {
 			this.clinicOwnerService.saveClinicOwner(currentClinicOwner, "basicClinicOwner");
 			redirectAttributes.addFlashAttribute("message", "Tu cuenta ha pasado a plan " + plan.charAt(0)
 					+ plan.toLowerCase().substring(1, plan.length())
-					+ ". Esto significa que ya no puedes disfrutar de todas las ventajas de PetClinic Premium. Esperemos no sea por mucho tiempo ;)");
+					+ ". Esto significa que ya no puedes disfrutar de todas las ventajas de PetClinic Premium. Esperemos no sea por mucho tiempo ;)"
+					+ " ¡Recuerda que para visualizar tus funcionalidades debes volver a iniciar sesión!");
 
 		} else if (plan.equals(PlanType.ADVANCED.toString())) {
 			this.clinicOwnerService.saveClinicOwner(currentClinicOwner, "advancedClinicOwner");
 			redirectAttributes.addFlashAttribute("message", "¡Buena opción! Ya puedes disfrutar de las ventajas de "
-					+ plan.charAt(0) + plan.toLowerCase().substring(1, plan.length()) + " en Petclinic");
+					+ plan.charAt(0) + plan.toLowerCase().substring(1, plan.length()) + " en Petclinic."
+					+ " ¡Recuerda que para visualizar tus funcionalidades debes volver a iniciar sesión!");
 		} else if (plan.equals(PlanType.PRO.toString())) {
 			this.clinicOwnerService.saveClinicOwner(currentClinicOwner, "proClinicOwner");
 			redirectAttributes.addFlashAttribute("message",
 					"¡Genial! Ya eres " + plan.charAt(0) + plan.toLowerCase().substring(1, plan.length())
-							+ " en Petclinic. ¡Puedes disfrutar de todos los servicios!");
+							+ " en Petclinic. ¡Puedes disfrutar de todos los servicios!"
+							+ " ¡Recuerda que para visualizar tus funcionalidades debes volver a iniciar sesión!");
+		}
+
+		try{
+			request.logout();
+		} catch (ServletException e){
 		}
 
 		return "redirect:/";

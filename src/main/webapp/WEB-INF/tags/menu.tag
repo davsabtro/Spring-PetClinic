@@ -35,29 +35,37 @@
 					<span>Veterinarios</span>
 				</petclinic:menuItem>
 
-				<petclinic:menuItem active="${name eq 'causes'}" url="/causes"
-					title="causes">
-					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-					<span>Causas</span>
-				</petclinic:menuItem>
+				<sec:authorize access="isAuthenticated()">
+					<petclinic:menuItem active="${name eq 'causes'}" url="/causes"
+						title="causes">
+						<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+						<span>Causas</span>
+					</petclinic:menuItem>
+				</sec:authorize>
 				
-				<petclinic:menuItem active="${name eq 'pethotels'}" url="/pethotels/new"
-					title="hotel">
-					<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
-					<span>Hotel</span>
-				</petclinic:menuItem>
+				<sec:authorize access="hasAnyAuthority('owner')">
+					<petclinic:menuItem active="${name eq 'pethotels'}" url="/pethotels/new"
+						title="hotel">
+						<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+						<span>Hotel</span>
+					</petclinic:menuItem>
+				</sec:authorize>
 				
-				<petclinic:menuItem active="${name eq 'adoption'}" url="/adoption/petsList"
-					title="hotel">
-					<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
-					<span>Dar en adopción</span>
-				</petclinic:menuItem>
-				
-				<petclinic:menuItem active="${name eq 'adoption'}" url="/adoption/petsOnAdoptionList"
-					title="hotel">
-					<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-					<span>Adoptar</span>
-				</petclinic:menuItem>
+				<sec:authorize access="hasAuthority('owner')">
+					<petclinic:menuItem active="${name eq 'adoption'}" url="/adoption/petsList"
+						title="hotel">
+						<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
+						<span>Dar en adopción</span>
+					</petclinic:menuItem>
+				</sec:authorize>
+
+				<sec:authorize access="hasAuthority('owner')">
+					<petclinic:menuItem active="${name eq 'adoption'}" url="/adoption/petsOnAdoptionList"
+						title="hotel">
+						<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+						<span>Adoptar</span>
+					</petclinic:menuItem>
+				</sec:authorize>
 				
 				<sec:authorize access="hasAnyAuthority('basicClinicOwner','advancedClinicOwner','proClinicOwner') and isAuthenticated()">
 					<petclinic:menuItem active="${name eq 'premium'}" url="/clinicowner/premium"
@@ -136,11 +144,11 @@
 												<strong><sec:authentication property="name" /></strong>
 											</p>
 											
-													
-													<p class="text-left">
-													<a href="<c:url value="/users/changePassword" />"
-													class="btn btn-primary btn-block btn-sm">Cambiar contraseña</a>
-													
+													<sec:authorize access="hasAnyAuthority('proClinicOwner')">
+														<p class="text-left">
+														<a href="<c:url value="/users/changePassword" />"
+														class="btn btn-primary btn-block btn-sm">Cambiar contraseña</a>
+													</sec:authorize>
 													<p class="text-left">
 												<a href="<c:url value="/logout" />"
 													class="btn btn-primary btn-block btn-sm">Salir</a>
