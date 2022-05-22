@@ -37,13 +37,14 @@ public class ClinicOwnerService {
 	}
 
 	@Transactional
-	public void saveClinicOwner(ClinicOwner clinicOwner, String authority) throws DataAccessException {
+	public void saveClinicOwner(ClinicOwner clinicOwner, String authority)
+			throws DataAccessException {
 		clinicOwnerRepository.save(clinicOwner);
 		userService.saveUser(clinicOwner.getUser());
 		authoritiesService.saveAuthorities(clinicOwner.getUser().getUsername(), authority);
 	}
-	
-	
+
+
 	@Transactional
 	public ClinicOwner findClinicOwnerByUserName(String username) throws DataAccessException {
 		return this.clinicOwnerRepository.findClinicOwnerByUserName(username);

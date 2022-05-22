@@ -43,10 +43,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/users/new").permitAll() //
 				.antMatchers("/clinics/new").permitAll() //
 				.antMatchers("/admin/**").hasAnyAuthority(admin) //
-				.antMatchers("/owners**").authenticated() //
-				.antMatchers("/vets**").authenticated() //
+				.antMatchers("/owners/**").authenticated() //
+				.antMatchers("/vets/**").authenticated() //
 				.antMatchers("/causes/**").authenticated() //
-				.antMatchers("/changelog").authenticated()
+				.antMatchers("/changelog").authenticated() //
 				.antMatchers("/clinicowner/**").hasAnyAuthority(basicCO, advancedCO, proCO) //
 				.antMatchers("/adoption/**").hasAnyAuthority(owner) //
 				.antMatchers("/supportpage/**").permitAll() //
@@ -55,10 +55,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.anyRequest().denyAll() //
 				.and().formLogin()
 
-				// TODO cambiar de contraseñas ahora mismo está soportado sólo para owners. Puede
-				// que haya que modificar esto cuando haya roles distintos que puedan cambiar su
-				// contraseña (por ejemplo clínicas)
-	
 				/* .loginPage("/login") */
 				.failureUrl("/login-error").and().logout().logoutSuccessUrl("/");
 		// Configuración para que funcione la consola de administración

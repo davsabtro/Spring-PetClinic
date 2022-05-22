@@ -16,14 +16,12 @@ package org.springframework.samples.petclinic.cause;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
-
 import javax.validation.Valid;
-
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.clinicowner.ClinicOwner;
 import org.springframework.samples.petclinic.clinicowner.ClinicOwnerService;
 import org.springframework.samples.petclinic.donation.Donation;
+import org.springframework.samples.petclinic.user.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -35,7 +33,6 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.samples.petclinic.user.UserService;
 
 /**
  * @author Juergen Hoeller
@@ -57,7 +54,8 @@ public class CauseController {
 	private final ClinicOwnerService clinicOwnerService;
 
 	@Autowired
-	public CauseController(CauseService causeService, UserService userService, ClinicOwnerService clinicOwnerService) {
+	public CauseController(CauseService causeService, UserService userService,
+			ClinicOwnerService clinicOwnerService) {
 		this.causeService = causeService;
 		this.userService = userService;
 		this.clinicOwnerService = clinicOwnerService;
@@ -88,15 +86,12 @@ public class CauseController {
 		String userName = userService.getCurrentUserName();
 		ClinicOwner clinicOwner = clinicOwnerService.findClinicOwnerByUserName(userName);
 
-		if(!Objects.isNull(clinicOwner)){
-			if(clinicOwner.getPlan().toString() == "BASIC"){
-				redirectAttributes.addFlashAttribute("message", "No puedes crear causas con el plan Basic");
-				return "redirect:/causes/";
-			}
+		if (!Objects.isNull(clinicOwner) && clinicOwner.getPlan().toString().equals("BASIC")) {
+			redirectAttributes.addFlashAttribute("message",
+					"No puedes crear causas con el plan Basic");
+			return "redirect:/causes/";
 		}
 
-
-		
 		if (cause.getName().isEmpty() || cause.getDescription().isEmpty()
 				|| cause.getOrganization().isEmpty()) {
 			redirectAttributes.addFlashAttribute("message", "Todos los campos son obligatorios");
