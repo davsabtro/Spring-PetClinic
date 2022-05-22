@@ -20,8 +20,21 @@
         <span class="glyphicon glyphicon-plus" aria-hidden="true"> 
               
           <span class="card-text" style="font-size:16px;"> Added interface adjustment to actual plan.</span>
-          <span class="card-text" style="font-size:16px;"> Added Customer agreement in the application.</span>
+          
         </span>
+        <br>
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"> 
+              
+          <span class="card-text" style="font-size:16px;"> Added Customer agreement in the application.</span>
+          
+        </span>
+        <br>
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"> 
+              
+          <span class="card-text" style="font-size:16px;"> Added Support page section.</span>
+          
+        </span>
+        
       </div>
     </div>
       <br>
