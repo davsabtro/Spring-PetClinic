@@ -8,8 +8,8 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="owners">
-    <h2>
-        <c:if test="${owner['new']}">Nuevo </c:if> Propietario
+   <c:if test="${owner['new']}"> <h2>
+        Nuevo  Propietario
     </h2>
     <form:form modelAttribute="owner" class="form-horizontal" id="add-owner-form">
         <div class="form-group has-feedback">
@@ -34,4 +34,35 @@
             </div>
         </div>
     </form:form>
+</c:if>    
+    <c:if test="${clinicOwner['new']}">
+    	<h2>
+		Nueva  clinica
+	</h2>
+	<form:form modelAttribute="clinicOwner" class="form-horizontal"
+		id="add-owner-form">
+		<div class="form-group has-feedback">
+			<petclinic:inputField label="Nombre" name="clinicName" />
+			<petclinic:inputField label="Email" name="email" />
+			<petclinic:inputField label="CIF/NIF" name="cif" />
+			<petclinic:inputField label="Direccion" name="address" />
+			<petclinic:inputField label="Ciudad" name="city" />
+			<petclinic:inputField label="Telefono" name="telephone" />
+			<petclinic:inputField label="Usuario" name="user.username" />
+			<petclinic:inputField label="Contraseña" name="user.password" />
+		</div>
+		 <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <c:choose>
+                    <c:when test="${clinicOwner['new']}">
+                        <button class="btn btn-default" type="submit">Añadir clinica</button>
+                    </c:when>
+                    <c:otherwise>
+                        <button class="btn btn-default" type="submit">Actualizar clinica</button>
+                    </c:otherwise>
+                </c:choose>
+            </div>
+        </div>
+	</form:form>
+    </c:if>
 </petclinic:layout>

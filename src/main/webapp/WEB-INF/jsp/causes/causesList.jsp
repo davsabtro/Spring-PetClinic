@@ -9,6 +9,8 @@ uri="http://www.springframework.org/security/tags"%>
 
 <petclinic:layout pageName="causes">
 	<h2>Causas disponibles</h2>
+	
+	
 
 	<table id="causesTable" class="table table-striped">
 		<thead>
@@ -71,6 +73,8 @@ uri="http://www.springframework.org/security/tags"%>
 		</tbody>
 	</table>
 
-	<spring:url value="/causes/new" var="addUrl"> </spring:url>
-	<a href="${fn:escapeXml(addUrl)}" class="btn btn-default">Crear causa</a>
+	<sec:authorize access="hasAnyAuthority('owner', 'advancedClinicOwner', 'proClinicOwner', 'admin')">
+		<spring:url value="/causes/new" var="addUrl"> </spring:url>
+		<a href="${fn:escapeXml(addUrl)}" class="btn btn-default">Crear causa</a>
+	</sec:authorize>
 </petclinic:layout>
