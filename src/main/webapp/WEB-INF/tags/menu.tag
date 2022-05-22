@@ -74,6 +74,12 @@
 					<span>Premium</span>
 				</petclinic:menuItem>
 			</sec:authorize>
+			
+			<petclinic:menuItem active="${name eq 'supportpage'}" url="/supportpage"
+					title="Soporte">
+					<span class="glyphicon glyphicon-heart-sign" aria-hidden="true"></span>
+					<span>Soporte</span>
+				</petclinic:menuItem>
 
 			</ul>
 			
