@@ -4,15 +4,34 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-// /customeragreement/show
-
 @Controller
 public class CustomerAgreementController {
 
-    private static final String VIEWS_CUSTOMER_AGREEMENT_SHOHW = "customeragreement/show";
+    private static final String VIEWS_CUSTOMER_AGREEMENT_SHOW_ALL = "customeragreement/showAll";
+    private static final String VIEWS_CUSTOMER_AGREEMENT_SHOW_FREE =
+            "customeragreement/showFreePlan";
+    private static final String VIEWS_CUSTOMER_AGREEMENT_SHOW_ADVANCED =
+            "customeragreement/showPaidPlans";
+    private static final String VIEWS_CUSTOMER_AGREEMENT_SHOW_PRO =
+            "customeragreement/showPaidPlans";
 
-    @GetMapping(value = "/customeragreement/show")
-    public String showPage(Map<String, Object> model) {
-        return VIEWS_CUSTOMER_AGREEMENT_SHOHW;
+    @GetMapping(value = "/customeragreement/showAll")
+    public String showAllPlans(Map<String, Object> model) {
+        return VIEWS_CUSTOMER_AGREEMENT_SHOW_ALL;
+    }
+
+    @GetMapping(value = "/customeragreement/showBasic")
+    public String showPageBasic(Map<String, Object> model) {
+        return VIEWS_CUSTOMER_AGREEMENT_SHOW_FREE;
+    }
+
+    @GetMapping(value = "/customeragreement/showAdvanced")
+    public String showPageAdvanced(Map<String, Object> model) {
+        return VIEWS_CUSTOMER_AGREEMENT_SHOW_ADVANCED;
+    }
+
+    @GetMapping(value = "/customeragreement/showPro")
+    public String showPagePro(Map<String, Object> model) {
+        return VIEWS_CUSTOMER_AGREEMENT_SHOW_PRO;
     }
 }
