@@ -59,6 +59,12 @@
 					<span>Adoptar</span>
 				</petclinic:menuItem>
 
+				<petclinic:menuItem active="${name eq 'changelog'}" url="/changelog"
+					title="changelog">
+					<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+					<span>Changelog</span>
+				</petclinic:menuItem>
+
 			</ul>
 
 
