@@ -10,7 +10,7 @@
 <petclinic:layout pageName="changelog">
 
     <h1>Changelog</h1>
-    <p>All changes and new features will be documented in this section.</p>
+    <p>All changes and new features implemented will be documented in this section.</p>
 
     <hr>
     <div class="card">
