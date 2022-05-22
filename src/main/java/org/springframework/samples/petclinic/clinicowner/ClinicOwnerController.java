@@ -2,6 +2,8 @@ package org.springframework.samples.petclinic.clinicowner;
 
 import java.util.Map;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.user.UserService;
@@ -41,7 +43,7 @@ public class ClinicOwnerController {
 	}
 
 	@GetMapping(value = "changePlan/{plan}")
-	public String listSuitors(@PathVariable("plan") String plan, RedirectAttributes redirectAttributes) {
+	public String listSuitors(@PathVariable("plan") String plan, RedirectAttributes redirectAttributes, HttpServletRequest request) {
 		String currentUserName = this.userService.getCurrentUserName();
 		ClinicOwner currentClinicOwner = this.clinicOwnerService.findClinicOwnerByUserName(currentUserName);
 		currentClinicOwner.setPlan(PlanType.valueOf(plan));
@@ -64,6 +66,11 @@ public class ClinicOwnerController {
 					"¡Genial! Ya eres " + plan.charAt(0) + plan.toLowerCase().substring(1, plan.length())
 							+ " en Petclinic. ¡Puedes disfrutar de todos los servicios!"
 							+ " ¡Recuerda que para visualizar tus funcionalidades debes volver a iniciar sesión!");
+		}
+
+		try{
+			request.logout();
+		} catch (ServletException e){
 		}
 
 		return "redirect:/";
