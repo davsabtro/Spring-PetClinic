@@ -46,6 +46,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/owners**").authenticated() //
 				.antMatchers("/vets**").authenticated() //
 				.antMatchers("/causes/**").authenticated() //
+				.antMatchers("/changelog").authenticated()
 				.antMatchers("/clinicowner/**").hasAnyAuthority(basicCO, advancedCO, proCO) //
 				.antMatchers("/adoption/**").hasAnyAuthority(owner) //
 				.antMatchers("/customeragreement/**").permitAll() //
@@ -82,4 +83,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		return NoOpPasswordEncoder.getInstance();
 	}
 
+
 }
+

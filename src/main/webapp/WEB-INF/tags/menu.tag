@@ -75,6 +75,14 @@
 					</petclinic:menuItem>
 				</sec:authorize>
 
+
+				<petclinic:menuItem active="${name eq 'changelog'}" url="/changelog"
+					title="changelog">
+					<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+					<span>Changelog</span>
+				</petclinic:menuItem>
+
+
 				<sec:authorize access="!isAuthenticated()">
 					<petclinic:menuItem active="${name eq 'customeragreementsAll'}" url="/customeragreement/showAll"
 						title="customeragreementsall">
@@ -106,6 +114,7 @@
 						<span>Mi acuerdo de cliente</span>
 					</petclinic:menuItem>
 				</sec:authorize>
+
 			</ul>
 
 			<ul class="nav navbar-nav navbar-right">
