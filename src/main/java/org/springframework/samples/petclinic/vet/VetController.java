@@ -43,6 +43,7 @@ public class VetController {
 
 	@Autowired
 	public VetController(VetService clinicService) {
+
 		this.vetService = clinicService;
 	}
 

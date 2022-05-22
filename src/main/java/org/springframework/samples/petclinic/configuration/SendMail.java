@@ -13,6 +13,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.samples.petclinic.clinicowner.ClinicOwner;
 import org.springframework.samples.petclinic.clinicowner.ClinicOwnerService;
+import org.springframework.samples.petclinic.clinicowner.PlanType;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -36,7 +37,7 @@ public class SendMail implements ApplicationListener<AuthenticationSuccessEvent>
 		String userName = ((UserDetails) event.getAuthentication().getPrincipal()).getUsername();
 		ClinicOwner clinicOwner = this.clinicOwnerService.findClinicOwnerByUserName(userName);
 		try {
-			if (clinicOwner != null) {
+			if (clinicOwner != null && clinicOwner.getPlan().equals(PlanType.PRO)) {
 				String email = clinicOwner.getEmail().strip().toLowerCase();
 				sendMail(userName, email);
 			}
