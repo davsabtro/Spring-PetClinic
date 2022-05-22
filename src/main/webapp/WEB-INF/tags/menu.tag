@@ -82,6 +82,14 @@
 					<span>Changelog</span>
 				</petclinic:menuItem>
 
+			
+			<petclinic:menuItem active="${name eq 'supportpage'}" url="/supportpage"
+					title="Soporte">
+					<span class="glyphicon glyphicon-heart-sign" aria-hidden="true"></span>
+					<span>Soporte</span>
+				</petclinic:menuItem>
+
+
 
 				<sec:authorize access="!isAuthenticated()">
 					<petclinic:menuItem active="${name eq 'customeragreementsAll'}" url="/customeragreement/showAll"
@@ -114,7 +122,7 @@
 						<span>Mi acuerdo de cliente</span>
 					</petclinic:menuItem>
 				</sec:authorize>
-
+        
 			</ul>
 
 			<ul class="nav navbar-nav navbar-right">
